@@ -1,0 +1,361 @@
+/* SectorList.css */
+
+:root {
+  /* Primary Colors */
+  --primary-teal: #338389;
+  --primary-teal-dark: #2A6970;
+  --primary-teal-light: #F0F7F8;
+  
+  /* System Colors */
+  --system-gics: #3498db;
+  --system-icb: #2ecc71;
+  --system-bics: #9b59b6;
+  --system-trbc: #e74c3c;
+  --system-naics: #f39c12;
+  --system-simple: #1abc9c;
+  
+  /* Neutral Colors */
+  --text-dark: #2C3E50;
+  --text-medium: #5D6D7E;
+  --text-light: #85929E;
+  --border-light: #D5DBDB;
+  --border-very-light: #E8ECEE;
+  --bg-light: #F8F9F9;
+  --bg-white: #FFFFFF;
+  
+  /* State Colors */
+  --hover-bg: #F0F7F8;
+  --shadow: rgba(0, 0, 0, 0.08);
+  --shadow-hover: rgba(0, 0, 0, 0.12);
+  --overlay: rgba(44, 62, 80, 0.1);
+}
+
+/* -------------------- MAIN CONTAINER -------------------- */
+.sector-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  background: var(--bg-light);
+  min-height: 100vh;
+}
+
+/* -------------------- TITLE SECTION -------------------- */
+.sector-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.sector-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: var(--primary-teal);
+  border-radius: 2px;
+}
+
+.sector-subtitle {
+  text-align: center;
+  color: var(--text-medium);
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* -------------------- SYSTEMS CONTAINER -------------------- */
+.sector-systems-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+/* -------------------- SYSTEM SECTION -------------------- */
+.system-section {
+  background: var(--bg-white);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px var(--shadow);
+  border: 1px solid var(--border-very-light);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.system-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--shadow-hover);
+}
+
+.system-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--hover-bg);
+}
+
+.system-name {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.system-name::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary-teal);
+  display: inline-block;
+}
+
+.sector-count {
+  background: var(--primary-teal-light);
+  color: var(--primary-teal-dark);
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* -------------------- SECTOR GRID -------------------- */
+.sector-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+/* -------------------- SECTOR CARDS -------------------- */
+.sector-card {
+  background: var(--bg-white);
+  border: 2px solid var(--border-light);
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sector-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--primary-teal);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.sector-card:hover::before {
+  transform: scaleX(1);
+}
+
+.sector-card:hover {
+  background: var(--hover-bg);
+  border-color: var(--primary-teal);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px var(--shadow);
+}
+
+.sector-name {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.system-badge {
+  background: var(--primary-teal-light);
+  color: var(--primary-teal-dark);
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.sector-card:hover .system-badge {
+  background: var(--primary-teal);
+  color: white;
+}
+
+/* System-specific colors */
+.sector-card[class*="GICS"]::before { background: var(--system-gics); }
+.sector-card[class*="ICB"]::before { background: var(--system-icb); }
+.sector-card[class*="BICS"]::before { background: var(--system-bics); }
+.sector-card[class*="TRBC"]::before { background: var(--system-trbc); }
+.sector-card[class*="NAICS"]::before { background: var(--system-naics); }
+.sector-card[class*="SIMPLE"]::before { background: var(--system-simple); }
+
+.sector-card[class*="GICS"]:hover .system-badge { background: var(--system-gics); }
+.sector-card[class*="ICB"]:hover .system-badge { background: var(--system-icb); }
+.sector-card[class*="BICS"]:hover .system-badge { background: var(--system-bics); }
+.sector-card[class*="TRBC"]:hover .system-badge { background: var(--system-trbc); }
+.sector-card[class*="NAICS"]:hover .system-badge { background: var(--system-naics); }
+.sector-card[class*="SIMPLE"]:hover .system-badge { background: var(--system-simple); }
+
+/* -------------------- RESPONSIVE DESIGN -------------------- */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .sector-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  
+  .sector-title {
+    font-size: 2.25rem;
+  }
+  
+  .system-name {
+    font-size: 1.5rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .sector-container {
+    padding: 1.5rem 1rem;
+  }
+  
+  .sector-title {
+    font-size: 2rem;
+  }
+  
+  .sector-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .system-section {
+    padding: 1.5rem;
+  }
+  
+  .sector-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+  
+  .system-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .sector-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .sector-title {
+    font-size: 1.75rem;
+  }
+  
+  .sector-card {
+    min-height: 80px;
+    padding: 1rem;
+  }
+  
+  .sector-name {
+    font-size: 0.95rem;
+  }
+}
+
+/* -------------------- ANIMATIONS -------------------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.system-section {
+  animation: fadeIn 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.system-section:nth-child(1) { animation-delay: 0.1s; }
+.system-section:nth-child(2) { animation-delay: 0.2s; }
+.system-section:nth-child(3) { animation-delay: 0.3s; }
+.system-section:nth-child(4) { animation-delay: 0.4s; }
+.system-section:nth-child(5) { animation-delay: 0.5s; }
+.system-section:nth-child(6) { animation-delay: 0.6s; }
+
+/* -------------------- SCROLLBAR -------------------- */
+.sector-systems-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sector-systems-container::-webkit-scrollbar-track {
+  background: var(--bg-light);
+  border-radius: 4px;
+}
+
+.sector-systems-container::-webkit-scrollbar-thumb {
+  background: var(--primary-teal);
+  border-radius: 4px;
+}
+
+.sector-systems-container::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-teal-dark);
+}
+
+/* -------------------- ACCESSIBILITY -------------------- */
+.sector-card:focus {
+  outline: 3px solid var(--primary-teal-light);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .system-section,
+  .sector-card {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* -------------------- DARK MODE -------------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-dark: #F8F9F9;
+    --text-medium: #D5DBDB;
+    --text-light: #85929E;
+    --border-light: #34495E;
+    --border-very-light: #2C3E50;
+    --bg-light: #1A252F;
+    --bg-white: #1C2833;
+    --hover-bg: #21313F;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --shadow-hover: rgba(0, 0, 0, 0.4);
+  }
+}

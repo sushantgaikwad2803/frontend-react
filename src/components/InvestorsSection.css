@@ -1,0 +1,336 @@
+/* InvestorsSection.css */
+
+:root {
+  /* Primary Colors */
+  --primary-teal: #338389;
+  --primary-teal-dark: #2A6970;
+  --primary-teal-light: #F0F7F8;
+
+  /* Neutral Colors */
+  --text-dark: #2C3E50;
+  --text-medium: #5D6D7E;
+  --text-light: #85929E;
+  --border-light: #D5DBDB;
+  --border-very-light: #E8ECEE;
+  --bg-light: #F8F9F9;
+  --bg-white: #FFFFFF;
+
+  /* State Colors */
+  --hover-bg: #F0F7F8;
+  --shadow: rgba(0, 0, 0, 0.06);
+  --overlay: rgba(44, 62, 80, 0.55);
+}
+
+/* Investors Wrapper */
+.investor-wrapper {
+  width: 100%;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, var(--bg-white) 0%, var(--text-lightt) 0%);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Title */
+.investor-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 2.5rem;
+  line-height: 1.2;
+  position: relative;
+  display: inline-block;
+}
+
+.investor-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-teal), var(--primary-teal-dark));
+  border-radius: 2px;
+  animation: widthPulse 3s infinite;
+}
+
+@keyframes widthPulse {
+  0%, 100% { width: 120px; }
+  50% { width: 150px; }
+}
+
+/* Subtitle */
+.investor-subtitle {
+  font-size: 1.3rem;
+  color: var(--text-medium);
+  max-width: 800px;
+  margin: 0 auto 50px;
+  line-height: 1.6;
+  padding: 0 20px;
+}
+
+/* DESKTOP: Horizontal Logo Layout */
+@media (min-width: 769px) {
+  .investor-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+    flex-wrap: nowrap; /* Keep logos in single row */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+    background: var(--bg-white);
+    border-radius: 20px;
+    box-shadow: 
+      0 15px 35px var(--shadow),
+      0 5px 15px rgba(51, 131, 137, 0.1);
+    border: 1px solid var(--border-light);
+  }
+
+  .investor-logo {
+    height: 70px;
+    width: auto;
+    object-fit: contain;
+    filter: grayscale(100%) opacity(0.8);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 15px;
+    border-radius: 10px;
+    background: var(--bg-white);
+    border: 1px solid var(--border-very-light);
+    flex-shrink: 0;
+  }
+
+  .investor-logo:hover {
+    filter: grayscale(0%) opacity(1);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 
+      0 10px 25px rgba(0, 0, 0, 0.1),
+      0 5px 15px rgba(51, 131, 137, 0.15);
+    border-color: var(--primary-teal-light);
+  }
+}
+
+/* MOBILE: Vertical Logo Layout */
+@media (max-width: 768px) {
+  .investor-wrapper {
+    padding: 60px 15px;
+  }
+  
+  .investor-title {
+    font-size: 2rem;
+  }
+  
+  .investor-subtitle {
+    font-size: 1.1rem;
+    padding: 0 15px;
+    margin-bottom: 40px;
+  }
+  
+  .investor-logos {
+    display: flex;
+    flex-direction: column; /* Stack logos vertically */
+    align-items: center;
+    gap: 25px;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 25px;
+    background: var(--bg-white);
+    border-radius: 16px;
+    box-shadow: 
+      0 10px 25px var(--shadow),
+      0 3px 10px rgba(51, 131, 137, 0.1);
+    border: 1px solid var(--border-light);
+  }
+  
+  .investor-logo {
+    height: 60px;
+    width: 200px;
+    object-fit: contain;
+    filter: grayscale(100%) opacity(0.8);
+    transition: all 0.3s ease;
+    padding: 12px 20px;
+    border-radius: 8px;
+    background: var(--bg-white);
+    border: 1px solid var(--border-very-light);
+  }
+  
+  .investor-logo:active {
+    filter: grayscale(0%) opacity(1);
+    transform: scale(0.98);
+    border-color: var(--primary-teal-light);
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .investor-wrapper {
+    padding: 50px 10px;
+  }
+  
+  .investor-title {
+    font-size: 1.7rem;
+  }
+  
+  .investor-subtitle {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+  
+  .investor-logos {
+    padding: 20px;
+    gap: 20px;
+  }
+  
+  .investor-logo {
+    height: 50px;
+    width: 180px;
+    padding: 10px 15px;
+  }
+}
+
+/* Logo Container Animation */
+.investor-logos::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    var(--primary-teal), 
+    var(--primary-teal-dark),
+    var(--primary-teal));
+  z-index: -1;
+  border-radius: inherit;
+  opacity: 0.1;
+  animation: gradientShift 8s ease infinite;
+  background-size: 200% 200%;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Responsive Design Adjustments */
+
+/* Tablet */
+@media (max-width: 992px) and (min-width: 769px) {
+  .investor-logos {
+    gap: 40px;
+    padding: 25px;
+  }
+  
+  .investor-logo {
+    height: 60px;
+    padding: 12px;
+  }
+}
+
+/* Focus states for accessibility */
+.investor-logo:focus {
+  outline: 3px solid var(--primary-teal-light);
+  outline-offset: 3px;
+  filter: grayscale(0%) opacity(1);
+}
+
+/* Animation for logos on load */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.investor-logo {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Desktop: Horizontal staggered animation */
+@media (min-width: 769px) {
+  .investor-logo:nth-child(1) { animation-delay: 0.1s; }
+  .investor-logo:nth-child(2) { animation-delay: 0.2s; }
+  .investor-logo:nth-child(3) { animation-delay: 0.3s; }
+  .investor-logo:nth-child(4) { animation-delay: 0.4s; }
+  .investor-logo:nth-child(5) { animation-delay: 0.5s; }
+}
+
+/* Mobile: Vertical staggered animation */
+@media (max-width: 768px) {
+  .investor-logo:nth-child(1) { animation-delay: 0.1s; }
+  .investor-logo:nth-child(2) { animation-delay: 0.3s; }
+  .investor-logo:nth-child(3) { animation-delay: 0.5s; }
+  .investor-logo:nth-child(4) { animation-delay: 0.7s; }
+  .investor-logo:nth-child(5) { animation-delay: 0.9s; }
+}
+
+/* Selection color */
+::selection {
+  background-color: var(--primary-teal-light);
+  color: var(--primary-teal-dark);
+}
+
+/* Dark mode support */
+/* @media (prefers-color-scheme: dark) {
+  .investor-wrapper {
+    background: linear-gradient(135deg, var(--text-dark) 0%, #2a4365 100%);
+  }
+  
+  .investor-title {
+    color: var(--bg-white);
+  }
+  
+  .investor-subtitle {
+    color: var(--text-light);
+  }
+  
+  .investor-logos {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .investor-logo {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    filter: grayscale(100%) brightness(150%) opacity(0.7);
+  }
+  
+  .investor-logo:hover,
+  .investor-logo:active {
+    filter: grayscale(0%) brightness(100%) opacity(1);
+    background: rgba(255, 255, 255, 0.1);
+  }
+} */
+
+/* Print styles */
+@media print {
+  .investor-wrapper {
+    padding: 40px 0;
+    background: none;
+  }
+  
+  .investor-title {
+    color: #000;
+  }
+  
+  .investor-subtitle {
+    color: #333;
+  }
+  
+  .investor-logos {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+  
+  .investor-logo {
+    filter: grayscale(100%);
+    border: 1px solid #ddd;
+  }
+} 

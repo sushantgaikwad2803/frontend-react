@@ -1,0 +1,610 @@
+.hero-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 700px;
+  overflow: hidden;
+  font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif;
+  isolation: isolate; /* Creates new stacking context */
+}
+
+/* Background with overlay */
+.hero-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(
+      135deg,
+      rgba(69, 122, 123, 0.9) 0%,
+      rgba(34, 120, 123, 0.845) 100%
+    ),
+    url('../media/s.avif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.7);
+  opacity: 0;
+  transform: scale(1.1);
+  animation: backgroundReveal 1.2s ease-out 0.3s forwards;
+  z-index: 1;
+}
+
+@keyframes backgroundReveal {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Content overlay */
+.hero-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 5%;
+  gap: 6rem;
+  z-index: 2;
+}
+
+/* Text content */
+.hero-text-content {
+  flex: 1;
+  max-width: 600px;
+  color: white;
+  z-index: 3;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: textSlideUp 1s ease-out 0.8s forwards;
+}
+
+@keyframes textSlideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-text-content h1 {
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem); /* Responsive font size */
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+.hero-text-content p {
+  font-size: clamp(1rem, 2vw, 1.25rem); /* Responsive font size */
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin-bottom: 0;
+  font-weight: 300;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: textSlideUp 0.8s ease-out 1.2s forwards;
+}
+
+/* Cards section */
+.hero-cards-section {
+  position: relative;
+  flex: 1;
+  height: 550px;
+  max-width: 550px;
+  min-height: 400px; /* Minimum height for mobile */
+  z-index: 3;
+}
+
+/* Base card styles */
+.hero-card {
+  position: absolute;
+  width: 200px;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+  filter: brightness(0.9) contrast(1.1);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  
+  /* Ensure images display properly */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* Initial state for scroll animation */
+  opacity: 0;
+  transform: translateY(50px) rotate(var(--rotation));
+  
+  /* Image rendering optimization */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* Scroll-triggered animation */
+.hero-card.animate-in {
+  animation: cardReveal 0.8s ease-out forwards;
+}
+
+@keyframes cardReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(50px) rotate(var(--rotation));
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-10px) rotate(var(--rotation));
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--rotation));
+  }
+}
+
+/* Hover animation */
+.hero-card:hover {
+  transform: translateY(-10px) scale(1.05) rotate(var(--rotation));
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.2);
+  filter: brightness(1) contrast(1.2);
+  z-index: 10;
+}
+
+/* Individual card positioning and rotation */
+.card-1 {
+  top: 12%;
+  left: 12%;
+  --rotation: -8deg;
+  animation-delay: 0.1s;
+}
+
+.card-2 {
+  top: 8%;
+  right: 18%;
+  --rotation: 5deg;
+  animation-delay: 0.2s;
+}
+
+.card-3 {
+  bottom: 22%;
+  left: 8%;
+  --rotation: -12deg;
+  animation-delay: 0.3s;
+}
+
+.card-4 {
+  bottom: 18%;
+  right: 22%;
+  --rotation: 10deg;
+  animation-delay: 0.4s;
+}
+
+.card-5 {
+  top: 52%;
+  left: 28%;
+  --rotation: -15deg;
+  animation-delay: 0.5s;
+}
+
+.card-6 {
+  top: 38%;
+  right: 8%;
+  --rotation: 8deg;
+  animation-delay: 0.6s;
+}
+
+/* Touch feedback for mobile */
+.hero-card:active {
+  transform: scale(0.98) rotate(var(--rotation));
+  transition: transform 0.1s ease;
+}
+
+/* Loading state for cards */
+.hero-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #374151 0%, #6b7280 100%);
+  border-radius: 16px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hero-card.loading::before {
+  opacity: 1;
+}
+
+/* ========== RESPONSIVE STYLES ========== */
+
+/* Laptop/Desktop (1025px and above) - Optimized */
+@media (min-width: 1025px) {
+  .hero-content {
+    gap: 4rem; /* Slightly reduced gap for better layout */
+  }
+  
+  .hero-cards-section {
+    height: 500px;
+    max-width: 500px;
+  }
+  
+  .hero-card {
+    width: 180px;
+    height: 240px;
+  }
+}
+
+/* Tablet devices (769px to 1024px) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .hero-container {
+    min-height: 800px; /* Increased for tablet */
+  }
+  
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    gap: 4rem;
+    padding: 4rem 5%;
+  }
+  
+  .hero-text-content {
+    max-width: 90%;
+    order: 2;
+    margin-top: 2rem;
+  }
+  
+  .hero-cards-section {
+    order: 1;
+    height: 450px;
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .hero-text-content h1 {
+    font-size: clamp(2.5rem, 4vw, 3rem);
+    margin-bottom: 1.5rem;
+  }
+  
+  .hero-text-content p {
+    font-size: clamp(1.1rem, 1.5vw, 1.2rem);
+  }
+  
+  /* Card sizing for tablet */
+  .hero-card {
+    width: 160px;
+    height: 210px;
+  }
+  
+  /* Tablet card positioning */
+  .card-1 { top: 10%; left: 10%; --rotation: -6deg; }
+  .card-2 { top: 5%; right: 10%; --rotation: 4deg; }
+  .card-3 { bottom: 20%; left: 5%; --rotation: -8deg; }
+  .card-4 { bottom: 15%; right: 15%; --rotation: 7deg; }
+  .card-5 { top: 50%; left: 25%; --rotation: -10deg; }
+  .card-6 { top: 35%; right: 5%; --rotation: 5deg; }
+}
+
+/* Mobile devices (481px to 768px) */
+@media (max-width: 768px) and (min-width: 481px) {  
+  .hero-container {
+    min-height: 100vh;
+    /* padding-top: 30px;  */
+  }
+  
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+    justify-content: flex-start;
+    gap: 3rem;
+    padding: 2rem 5% 3rem;
+  }
+  
+  .hero-text-content {
+    order: 2;
+    max-width: 95%;
+    padding: 0;
+  }
+  
+  .hero-text-content h1 {
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    margin-bottom: 1.2rem;
+  }
+  
+  .hero-text-content p {
+    font-size: clamp(1rem, 3vw, 1.1rem);
+    line-height: 1.6;
+  }
+  
+  .hero-cards-section {
+    order: 1;
+    height: 400px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  /* Mobile card sizing */
+  .hero-card {
+    width: 140px;
+    height: 190px;
+    box-shadow: 
+      0 12px 25px rgba(0, 0, 0, 0.35),
+      0 0 0 1px rgba(255, 255, 255, 0.15);
+  }
+  
+  /* Mobile card positioning */
+  .card-1 { top: 12%; left: 8%; --rotation: -4deg; }
+  .card-2 { top: 6%; right: 8%; --rotation: 3deg; }
+  .card-3 { bottom: 25%; left: 4%; --rotation: -6deg; }
+  .card-4 { bottom: 18%; right: 10%; --rotation: 5deg; }
+  .card-5 { top: 55%; left: 20%; --rotation: -8deg; }
+  .card-6 { top: 40%; right: 4%; --rotation: 4deg; }
+}
+
+/* Small mobile devices (480px and below) */
+@media (max-width: 480px) {
+  .hero-container {
+    min-height: 70vh;
+    padding-top: 0px;
+  }
+  
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+    justify-content: flex-start;
+    gap: 2.5rem;
+    padding: 1.5rem 4% 2rem;
+  }
+  
+  .hero-text-content h1 {
+    font-size: clamp(1.8rem, 6vw, 2.2rem);
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-text-content p {
+    font-size: clamp(0.95rem, 3vw, 1.05rem);
+    line-height: 1.5;
+    padding: 0 1rem;
+  }
+  
+  .hero-cards-section {
+    height: 350px;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+  
+  /* Small mobile card sizing */
+  .hero-card {
+    width: 120px;
+    height: 160px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Small mobile card positioning */
+  .card-1 { top: 10%; left: 6%; --rotation: -3deg; }
+  .card-2 { top: 6%; right: 8%; --rotation: 2deg; }
+  .card-3 { bottom: 25%; left: 3%; --rotation: -4deg; }
+  .card-4 { bottom: 18%; right: 8%; --rotation: 3deg; }
+  .card-5 { top: 55%; left: 15%; --rotation: -5deg; }
+  .card-6 { top: 42%; right: 3%; --rotation: 2deg; }
+}
+
+/* Extra small devices (360px and below) */
+@media (max-width: 360px) {
+  .hero-content {
+    padding: 1rem 3% 1.5rem;
+    gap: 2rem;
+  }
+  
+  .hero-text-content h1 {
+    font-size: 1.6rem;
+  }
+  
+  .hero-text-content p {
+    font-size: 0.9rem;
+    padding: 0 0.5rem;
+  }
+  
+  .hero-cards-section {
+    height: 320px;
+    max-width: 340px;
+  }
+  
+  /* Extra small card sizing */
+  .hero-card {
+    width: 100px;
+    height: 140px;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Extra small card positioning */
+  .card-1 { top: 12%; left: 4%; --rotation: -2deg; }
+  .card-2 { top: 8%; right: 6%; --rotation: 2deg; }
+  .card-3 { bottom: 28%; left: 2%; --rotation: -3deg; }
+  .card-4 { bottom: 20%; right: 6%; --rotation: 3deg; }
+  .card-5 { top: 58%; left: 12%; --rotation: -4deg; }
+  .card-6 { top: 45%; right: 2%; --rotation: 2deg; }
+}
+
+/* Landscape mode for mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+  .hero-container {
+    height: auto;
+    min-height: 100vh;
+    padding: 60px 0;
+  }
+  
+  .hero-content {
+    flex-direction: row;
+    padding: 1rem 3%;
+    gap: 2rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .hero-text-content {
+    order: 1;
+    flex: 1;
+    max-width: 50%;
+    text-align: left;
+  }
+  
+  .hero-cards-section {
+    order: 2;
+    flex: 1;
+    height: 280px;
+    max-width: 350px;
+    min-height: auto;
+  }
+  
+  .hero-text-content h1 {
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
+    margin-bottom: 0.8rem;
+  }
+  
+  .hero-text-content p {
+    font-size: clamp(0.85rem, 2vw, 1rem);
+    padding: 0;
+  }
+  
+  /* Landscape card sizing */
+  .hero-card {
+    width: 110px;
+    height: 150px;
+  }
+  
+  /* Landscape card positioning */
+  .card-1 { top: 15%; left: 5%; --rotation: -4deg; }
+  .card-2 { top: 8%; right: 8%; --rotation: 3deg; }
+  .card-3 { bottom: 20%; left: 2%; --rotation: -5deg; }
+  .card-4 { bottom: 15%; right: 10%; --rotation: 4deg; }
+  .card-5 { top: 58%; left: 10%; --rotation: -6deg; }
+  .card-6 { top: 45%; right: 2%; --rotation: 3deg; }
+}
+
+/* Short height devices */
+@media (max-height: 700px) and (orientation: portrait) {
+  .hero-container {
+    min-height: 100vh;
+    height: auto;
+  }
+  
+  .hero-content {
+    padding: 3rem 5% 2rem;
+  }
+  
+  .hero-cards-section {
+    height: 300px;
+  }
+  
+  .hero-card {
+    width: 130px;
+    height: 170px;
+  }
+}
+
+/* High-resolution displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .hero-background-image {
+    background-image: 
+      linear-gradient(
+        135deg,
+        rgba(69, 122, 123, 0.9) 0%,
+        rgba(86, 226, 231, 0.8) 100%
+      ),
+      url('../media/s.avif');
+    background-size: cover;
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .hero-background-image,
+  .hero-text-content,
+  .hero-text-content p,
+  .hero-card {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  
+  .hero-card:hover {
+    transform: none !important;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .hero-card {
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+  
+  .hero-card:hover {
+    box-shadow: 
+      0 30px 60px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Performance optimizations */
+.hero-card {
+  contain: content;
+  transform: translateZ(0); /* Hardware acceleration */
+}
+
+/* Prevent content shift during loading */
+.hero-container {
+  overflow: hidden;
+  position: relative;
+}
+
+/* Ensure proper image display */
+.hero-card[data-image] {
+  background-image: var(--card-image);
+  background-color: #374151; /* Fallback color */
+}
+
+/* Fix for iOS Safari */
+@supports (-webkit-touch-callout: none) {
+  .hero-container {
+    height: -webkit-fill-available;
+  }
+}
+
+/* Hide scrollbar but keep functionality */
+.hero-container::-webkit-scrollbar {
+  display: none;
+}
+
+.hero-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+} 

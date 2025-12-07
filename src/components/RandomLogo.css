@@ -1,0 +1,358 @@
+/* RandomLogo.css - Desktop Horizontal, Mobile Vertical */
+
+:root {
+  /* Primary Colors */
+  --primary-teal: #338389;
+  --primary-teal-dark: #2A6970;
+  --primary-teal-light: #F0F7F8;
+
+  /* Neutral Colors */
+  --text-dark: #2C3E50;
+  --text-medium: #5D6D7E;
+  --text-light: #85929E;
+  --border-light: #D5DBDB;
+  --border-very-light: #E8ECEE;
+  --bg-light: #F8F9F9;
+  --bg-white: #FFFFFF;
+
+  /* State Colors */
+  --hover-bg: #F0F7F8;
+  --shadow: rgba(0, 0, 0, 0.06);
+  --overlay: rgba(44, 62, 80, 0.55);
+}
+
+/* Logo Section */
+.logo-section1 {
+  width: 100%;
+  padding: 70px 20px;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-light);
+}
+
+/* Title */
+.logo-title1 {
+  text-align: center;
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 45px;
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.logo-title1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-teal), var(--primary-teal-dark));
+  border-radius: 2px;
+  animation: widthPulse 3s infinite;
+}
+
+/* Logo Wrapper */
+.logo-wrapper1 {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Logo Grid - Default: Grid layout for mobile */
+.logo-grid1 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Default: 2 columns for mobile */
+  gap: 25px;
+  padding: 20px;
+}
+
+/* Logo Card */
+.logo-card1 {
+  background: var(--bg-white);
+  border-radius: 18px;
+  padding: 30px 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  border: 2px solid var(--border-light);
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.08),
+    0 5px 15px rgba(51, 131, 137, 0.1);
+  position: relative;
+  overflow: hidden;
+  min-height: 200px;
+  width: 100%;
+}
+
+/* Hover Glow Effect */
+.logo-card1::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    var(--primary-teal), 
+    var(--primary-teal-dark),
+    var(--primary-teal));
+  z-index: -1;
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.logo-card1:hover::before {
+  opacity: 0.2;
+}
+
+.logo-card1:hover {
+  transform: translateY(-10px);
+  border-color: var(--primary-teal);
+  box-shadow: 
+    0 20px 45px rgba(0, 0, 0, 0.12),
+    0 10px 25px rgba(51, 131, 137, 0.2);
+}
+
+/* Medium Company Logo */
+.company-logo1 {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 20px;
+  transition: all 0.4s ease;
+  filter: grayscale(30%) contrast(1.1);
+  padding: 10px;
+  background: var(--bg-white);
+  border-radius: 16px;
+  border: 2px solid var(--border-very-light);
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.05),
+    0 4px 12px rgba(51, 131, 137, 0.08);
+}
+
+.logo-card1:hover .company-logo1 {
+  transform: scale(1.15);
+  filter: grayscale(0%) contrast(1.2);
+  border-color: var(--primary-teal-light);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.1),
+    0 8px 20px rgba(51, 131, 137, 0.2);
+}
+
+/* Ticker Badge */
+.logo-card1 p {
+  margin-top: 15px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary-teal);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 8px 20px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, 
+    rgba(51, 131, 137, 0.08) 0%,
+    rgba(51, 131, 137, 0.15) 100%);
+  border: 2px solid rgba(51, 131, 137, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-card1 p::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%);
+  transition: left 0.6s ease;
+}
+
+.logo-card1:hover p::before {
+  left: 100%;
+}
+
+.logo-card1:hover p {
+  color: var(--primary-teal-dark);
+  background: linear-gradient(135deg, 
+    rgba(51, 131, 137, 0.15) 0%,
+    rgba(51, 131, 137, 0.25) 100%);
+  border-color: var(--primary-teal);
+  transform: translateY(-3px);
+}
+
+/* DESKTOP: Horizontal Layout (NO SCROLLING) */
+@media (min-width: 1024px) {
+  .logo-grid1 {
+    display: flex !important; /* Force flex layout */
+    flex-wrap: nowrap !important; /* Keep in single row */
+    justify-content: center !important; /* Center cards */
+    gap: 30px !important;
+    padding: 20px !important;
+  }
+  
+  .logo-card1 {
+    width: 200px !important; /* Fixed width for desktop */
+    min-width: 200px !important; /* Prevent shrinking */
+    flex-shrink: 0 !important; /* Don't shrink */
+  }
+}
+
+/* TABLET: 3 columns */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .logo-grid1 {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns on tablet */
+    gap: 30px;
+  }
+  
+  .logo-card1 {
+    min-height: 180px;
+  }
+  
+  .company-logo1 {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+/* MOBILE: 2 columns (default) */
+@media (max-width: 767px) {
+  .logo-section1 {
+    padding: 50px 15px;
+  }
+  
+  .logo-title1 {
+    font-size: 1.9rem;
+    margin-bottom: 35px;
+  }
+  
+  .logo-grid1 {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+    gap: 20px;
+    padding: 15px;
+  }
+  
+  .logo-card1 {
+    min-height: 170px;
+    padding: 20px;
+  }
+  
+  .company-logo1 {
+    width: 75px;
+    height: 75px;
+    padding: 12px;
+  }
+  
+  .logo-card1 p {
+    font-size: 1.1rem;
+    padding: 7px 15px;
+  }
+}
+
+/* SMALL MOBILE: 1 column */
+@media (max-width: 480px) {
+  .logo-section1 {
+    padding: 40px 10px;
+  }
+  
+  .logo-title1 {
+    font-size: 1.7rem;
+    margin-bottom: 25px;
+  }
+  
+  .logo-grid1 {
+    grid-template-columns: 1fr; /* 1 column on very small screens */
+    max-width: 300px;
+    margin: 0 auto;
+    gap: 15px;
+  }
+  
+  .logo-card1 {
+    min-height: 150px;
+    padding: 18px;
+  }
+  
+  .company-logo1 {
+    width: 65px;
+    height: 65px;
+  }
+  
+  .logo-card1 p {
+    font-size: 1rem;
+    padding: 6px 12px;
+  }
+}
+
+/* Focus states for accessibility */
+.logo-card1:focus {
+  outline: 3px solid var(--primary-teal-light);
+  outline-offset: 2px;
+}
+
+/* Animation for card loading */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logo-card1 {
+  animation: fadeInUp 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+/* Stagger animations */
+.logo-card1:nth-child(1) { animation-delay: 0.1s; }
+.logo-card1:nth-child(2) { animation-delay: 0.2s; }
+.logo-card1:nth-child(3) { animation-delay: 0.3s; }
+.logo-card1:nth-child(4) { animation-delay: 0.4s; }
+.logo-card1:nth-child(5) { animation-delay: 0.5s; }
+.logo-card1:nth-child(6) { animation-delay: 0.6s; }
+.logo-card1:nth-child(7) { animation-delay: 0.7s; }
+.logo-card1:nth-child(8) { animation-delay: 0.8s; }
+
+/* Desktop horizontal animation */
+@media (min-width: 1024px) {
+  @keyframes fadeInFromBottom {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .logo-card1 {
+    animation: fadeInFromBottom 0.5s ease-out forwards;
+  }
+}
+
+/* Animation for the title underline */
+@keyframes widthPulse {
+  0% {
+    width: 100px;
+  }
+  50% {
+    width: 120px;
+  }
+  100% {
+    width: 100px;
+  }
+}

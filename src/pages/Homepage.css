@@ -1,0 +1,218 @@
+/* Base styles */
+.homepage {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden; 
+}
+
+/* Continuous Flow Section */
+.continuous-flow-section {
+  width: 100%;
+  padding: 80px 0;
+  /* background: linear-gradient(135deg, #f8fafa 0%, #e9ecef 100%); */
+  position: relative;
+}
+
+.flow-container {
+  margin: 0 auto;
+}
+
+/* Flow Track */
+.flow-track {
+  width: 100%;
+  overflow: hidden; 
+  position: relative;
+  padding: 20px 0;
+  background: linear-gradient(135deg, #346769 0%, #254e50 90%);
+}
+
+.flow-track::before,
+.flow-track::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.image-flow {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  width: max-content;
+  will-change: transform;
+}
+
+/* Flow Image Items */
+.flow-image {
+  position: relative;
+  flex-shrink: 0;
+  width: 200px;
+  height: 120px;
+  border-radius: 12px;
+  overflow: hidden;
+  /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); */
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.flow-image:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+}
+
+.flow-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 20px;
+  background: #FFFFFF;
+  transition: transform 0.3s ease;
+}
+
+.flow-image:hover img {
+  transform: scale(1.05);
+}
+
+/* Overlay with title */
+.flow-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  padding: 20px 12px 12px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.flow-image:hover .flow-overlay {
+  transform: translateY(0);
+}
+
+.flow-title {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  display: block;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-section {
+    height: 60vh;
+  }
+  
+  .section-header h2 {
+    font-size: 2.2rem;
+  }
+  
+  .section-header p {
+    font-size: 1.1rem;
+    padding: 0 20px;
+  }
+  
+  .flow-image {
+    width: 160px;
+    height: 100px;
+  }
+  
+  .image-flow {
+    gap: 30px;
+  }
+  
+  .flow-track::before,
+  .flow-track::after {
+    width: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .continuous-flow-section {
+    padding: 60px 0;
+  }
+  
+  .section-header {
+    margin-bottom: 40px;
+  }
+  
+  .section-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .section-header p {
+    font-size: 1rem;
+  }
+  
+  .flow-image {
+    width: 140px;
+    height: 90px;
+  }
+  
+  .image-flow {
+    gap: 25px;
+  }
+  
+  .flow-track {
+    padding: 15px 0;
+  }
+}
+
+/* Animation for smooth loading */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-header h2,
+.section-header p {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.section-header p {
+  animation-delay: 0.2s;
+  animation-fill-mode: both;
+}
+
+/* Performance optimizations */
+.flow-track {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+}
+
+.image-flow {
+  transform: translateZ(0);
+}
+
+/* Loading state for images */
+.flow-image img {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.flow-image img:not([src]) {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
