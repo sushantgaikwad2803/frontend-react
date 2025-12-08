@@ -10,6 +10,8 @@ import AllCompanies from "./pages/AllCompanies";
 import AllReports from "./pages/AllReports";
 import SectorList from "./pages/SectorList";
 import OtherFilters from "./pages/OtherFilters";
+import UploadPDF from "./pages/exa";
+import UPImage from "./pages/exa1";
 
 // If Footer is in pages folder, this import is fine
 import Footer from "./pages/Footer";
@@ -41,6 +43,11 @@ export default function App() {
           {/* Filters */}
           <Route path="/companies/alpha/:alpha" element={<AllCompanies />} />
           <Route path="/OtherFilter" element={<OtherFilters />} />
+
+          <Route path="/upload-pdf" element={<UploadPDF />} />
+
+           <Route path="/upload-logo" element={<UPImage />} />
+          
         </Routes>
 
         {/* Footer inside Router but outside Routes */}

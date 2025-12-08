@@ -1,57 +1,49 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import './RandomReport.css'; // Import the CSS file
+import './RandomReport.css';
 
 export default function RandomReport() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
-  const BASE = "http://127.0.0.1:8000";
-  
+  const BASE = "http://127.0.0.1:8000"; // Your Django backend
+
   useEffect(() => {
     async function loadData() {
       try {
         const res = await axios.get(`${BASE}/random-company-report/`);
         const list = res.data.results || [];
 
-        const processed = await Promise.all(
-          list.map(async (item) => {
-            const company = item.company || {};
-            const report = item.report || null; 
+        const processed = list.map(item => {
+          const company = item.company || {};
+          const report = item.report || null;
 
-            // If no report, return early
-            if (!report || !report.id) {
-              return { company, report: null, thumbnail_url: null };
+          let thumbnail_url = null;
+          let report_pdf = null;
+          let year = null;
+
+          if (report) {
+            year = report.year || null;
+
+            // Only set thumbnail_url if it exists
+            if (report.thumbnail_url && report.thumbnail_url.trim() !== "") {
+              thumbnail_url = report.thumbnail_url.startsWith("http")
+                ? report.thumbnail_url
+                : `${BASE}${report.thumbnail_url.startsWith("/") ? "" : "/"}${report.thumbnail_url}`;
             }
 
-            try {
-              const preview = await axios.get(
-                `${BASE}/pdf-first-page/${report.id}/`
-              );
-
-              // Backend may return relative OR absolute
-              let thumb = preview.data.thumbnail_url || null;
-              if (thumb && !thumb.startsWith("http")) {
-                thumb = BASE + thumb;
-              }
-
-              // Normalize report PDF
-              let pdf = report.report_pdf;
-              if (pdf && !pdf.startsWith("http")) pdf = BASE + pdf;
-
-              return {
-                company,
-                report: { ...report, report_pdf: pdf },
-                thumbnail_url: thumb,
-              };
-            } catch (err) {
-              console.warn("Preview not available:", err);
-              return { company, report, thumbnail_url: null };
+            // Only set report PDF if it exists
+            if (report.pdf_url && report.pdf_url.trim() !== "") {
+              report_pdf = report.pdf_url.startsWith("http")
+                ? report.pdf_url
+                : `${BASE}${report.pdf_url.startsWith("/") ? "" : "/"}${report.pdf_url}`;
             }
-          })
-        );
+          }
+
+          return { company, report: { ...report, report_pdf, year }, thumbnail_url };
+        });
 
         setItems(processed);
       } catch (err) {
@@ -64,55 +56,39 @@ export default function RandomReport() {
     loadData();
   }, []);
 
-  /* ---------------- LOADING --------------- */
   if (loading) {
-    return (
-      <div className="loading-message">
-        Fetching random sparks… 🔄
-      </div>
-    );
+    return <div className="loading-message">Fetching random reports… 🔄</div>;
   }
 
-  /* ---------------- UI ---------------- */
   return (
     <div className="random-report-container">
-      <h2 className="report-list-heading">
-        Company Reports
-      </h2>
-
+      <h2 className="report-list-heading">Company Reports</h2>
       <div className="report-grid">
         {items.map((item, idx) => {
           const { company, report, thumbnail_url } = item;
           const hasReport = report !== null;
 
           return (
-            <div
-              key={idx}
-              className="report-card"
-            >
+            <div key={idx} className="report-card">
               <div>
-                <h3 className="company-name">
-                  {company.name || "Unnamed Co."} 
-                </h3>
+                <h3 className="company-name">{company.name || "Unnamed Co."}</h3>
+                <p>{company.sector || "Sector not available"}</p>
+                <p>{hasReport && report.year ? report.year : "No report available"}</p>
 
-                <p>{company.sector}</p>
-                <p>
-                  {" "}
-                  {hasReport ? report.year : "No report available"} 
-                </p>
-
-                {/* Thumbnail (if available) */}
-                {hasReport && thumbnail_url && (
+                {hasReport && thumbnail_url ? (
                   <img
                     src={thumbnail_url}
-                    alt="Report preview"
+                    alt={`${company.name} report`}
                     className="report-thumbnail"
                     onError={(e) => (e.target.src = "/fallback-thumb.jpg")}
                   />
+                ) : (
+                  <div className="thumbnail-placeholder">
+                    No Thumbnail
+                  </div>
                 )}
               </div>
 
-              {/* ACTION BUTTONS */}
               <div className="card-actions">
                 <button
                   onClick={() => navigate(`/company-reports/${company.ticker}`)}
@@ -120,7 +96,6 @@ export default function RandomReport() {
                 >
                   View Reports
                 </button>
-
               </div>
             </div>
           );
@@ -129,3 +104,4 @@ export default function RandomReport() {
     </div>
   );
 }
+
