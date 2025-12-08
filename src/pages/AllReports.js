@@ -324,6 +324,8 @@ export default function AllReports() {
 
   const BASE_URL = "http://127.0.0.1:8000";
 
+  
+
   // Normalize URLs: keep absolute URLs (Cloudinary) as-is, add BASE_URL to relative URLs
   const normalizeUrl = (u) => {
     if (!u) return null;
@@ -531,6 +533,16 @@ function MostRecentCard({ report }) {
 }
 
 function ReportCard({ report }) {
+
+  const downloadFile = (pdfUrl) => {
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.setAttribute("download", ""); // forces download
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="report-card">
       <img
@@ -546,11 +558,17 @@ function ReportCard({ report }) {
         <a href={report.report_pdf} target="_blank" rel="noreferrer">
           <button className="btn-small">Open</button>
         </a>
-        <a href={report.report_pdf} download>
-          <button className="btn-small">Download</button>
-        </a>
+
+        {/* ✅ Fixed: use `report.report_pdf` instead of `item.pdf_url` */}
+        <button
+           onClick={() => {
+    window.location.href = `http://127.0.0.1:8000/download-report/${report.id}/`;
+  }}
+          className="btn-small"
+        >
+          Download
+        </button>
       </div>
     </div>
   );
 }
-
