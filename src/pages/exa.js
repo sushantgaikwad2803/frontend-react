@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function PDFUpload({ uploadUrl = "http://127.0.0.1:8000/upload-pdf/" }) {
+export default function PDFUpload() {
+
+  const BASE = process.env.REACT_APP_API_URL;   // 👈 from .env
+  const uploadUrl = `${BASE}/upload-pdf/`;      // 👈 use backend URL
 
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState("");
@@ -49,3 +52,4 @@ export default function PDFUpload({ uploadUrl = "http://127.0.0.1:8000/upload-pd
     </div>
   );
 }
+
