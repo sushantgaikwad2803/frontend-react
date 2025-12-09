@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function LogoUpload({ logoUploadUrl = "http://127.0.0.1:8000/upload-logo/" }) {
+export default function LogoUpload() {
+
+  const BASE = process.env.REACT_APP_API_URL;       // 👈 from .env
+  const logoUploadUrl = `${BASE}/upload-logo/`;     // 👈 backend endpoint
+
   const [imageFile, setImageFile] = useState(null);
   const [message, setMessage] = useState("");
 
@@ -20,8 +24,10 @@ export default function LogoUpload({ logoUploadUrl = "http://127.0.0.1:8000/uplo
       const response = await axios.post(logoUploadUrl, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+
       setMessage(response.data.message || "Logo updated successfully!");
       console.log("Response:", response.data);
+
     } catch (error) {
       console.error("Image Upload error:", error);
       setMessage(error.response?.data?.error || "Upload failed.");
