@@ -8,7 +8,7 @@ export default function RandomLogo() {
   const navigate = useNavigate();
 
   // Laptop IP address → required for mobile access
-  const BASE = "http://127.0.0.1:8000";
+  const BASE = "https://backend-django-phwi.onrender.com";
 
   useEffect(() => {
     axios
