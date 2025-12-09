@@ -234,12 +234,12 @@ const Header = () => {
               </button>
             </div>
 
-            // <button className="cart-button matching-color">
-            //   <FontAwesomeIcon icon={faShoppingCart} />
-            //   {cartItemCount > 0 && (
-            //     <span className="cart-badge">{cartItemCount}</span>
-            //   )}
-            // </button>
+            {/* <button className="cart-button matching-color">
+              <FontAwesomeIcon icon={faShoppingCart} />
+              {cartItemCount > 0 && (
+                <span className="cart-badge">{cartItemCount}</span>
+              )}
+            </button> */}
           </div>
         </nav>
       </header>
