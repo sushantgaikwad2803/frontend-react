@@ -8,7 +8,7 @@ export default function RandomReport() {
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
-  const BASE = "http://127.0.0.1:8000"; // Your Django backend
+  const BASE = "https://backend-django-phwi.onrender.com"; // Your Django backend
 
   useEffect(() => {
     async function loadData() {
