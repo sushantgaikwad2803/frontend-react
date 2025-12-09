@@ -17,7 +17,7 @@ export default function AllReports() {
   const [loading, setLoading] = useState(true);
   const [showMore, setShowMore] = useState(false);
 
-  const BASE_URL = process.env.REACT_APP_API_URL;
+  const BASE = process.env.REACT_APP_API_URL;
 
   
 
@@ -25,7 +25,7 @@ export default function AllReports() {
   const normalizeUrl = (u) => {
     if (!u) return null;
     u = u.trim();
-    return u.startsWith("http") ? u : BASE_URL + (u.startsWith("/") ? "" : "/") + u;
+    return u.startsWith("http") ? u : BASE + (u.startsWith("/") ? "" : "/") + u;
   };
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function AllReports() {
     async function loadData() {
       try {
         setLoading(true);
-        const res = await axios.get(`${BASE_URL}/company-reports/${ticker}/`);
+        const res = await axios.get(`${BASE}/company-reports/${ticker}/`);
 
         const formatted = {
           ...res.data,
