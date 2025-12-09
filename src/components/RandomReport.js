@@ -8,7 +8,7 @@ export default function RandomReport() {
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
-  const BASE = "https://backend-django-phwi.onrender.com"; // Your Django backend
+   const BASE = process.env.REACT_APP_API_URL; // Your Django backend
 
   useEffect(() => {
     async function loadData() {
