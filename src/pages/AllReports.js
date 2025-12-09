@@ -17,7 +17,7 @@ export default function AllReports() {
   const [loading, setLoading] = useState(true);
   const [showMore, setShowMore] = useState(false);
 
-   const BASE = process.env.REACT_APP_API_URL;
+  const BASE_URL = process.env.REACT_APP_API_URL;
 
   
 
