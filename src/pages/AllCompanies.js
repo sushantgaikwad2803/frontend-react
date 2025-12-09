@@ -39,7 +39,7 @@ export default function AllCompanies() {
   const [loading, setLoading] = useState(true);
 
   // IMPORTANT: Your laptop IP (works on mobile)
-  const BASE = "http://127.0.0.1:8000";
+   const BASE = process.env.REACT_APP_API_URL;
 
   // ------------------------------
   // FETCH COMPANIES
