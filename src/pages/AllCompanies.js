@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "./AllCompanies.css";
@@ -8,124 +8,111 @@ export default function AllCompanies() {
   const location = useLocation();
   const params = useParams();
 
-  // ------------------------------
-  // ROUTE PARAMS
-  // ------------------------------
   const routeSector = params.sector || "";
   const routeExchange = params.exchange || "";
   const routeAlpha = params.alpha || "";
 
-  // ------------------------------
-  // QUERY PARAMS
-  // ------------------------------
   const query = new URLSearchParams(location.search);
   const qSector = query.get("sector");
   const qAlpha = query.get("alpha");
   const qExchange = query.get("exchange");
   const qSearch = query.get("search");
 
-  // ------------------------------
-  // FINAL FILTER VALUES
-  // ------------------------------
   const finalSector = routeSector || qSector || "";
   const finalAlpha = (routeAlpha || qAlpha || "").toUpperCase();
   const finalExchange = routeExchange || qExchange || "";
   const finalSearch = qSearch ? qSearch.toLowerCase() : "";
 
-  // ------------------------------
-  // STATE
-  // ------------------------------
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // IMPORTANT: Your laptop IP (works on mobile)
-   const BASE = process.env.REACT_APP_API_URL;
+  const BASE = process.env.REACT_APP_API_URL;
 
-  // ------------------------------
-  // FETCH COMPANIES
-  // ------------------------------
+  const filterCompanies = useCallback(
+    (list) => {
+      let filtered = [...list];
+
+      if (finalSector) {
+        filtered = filtered.filter(
+          (c) =>
+            c.sector &&
+            c.sector.toLowerCase().trim() === finalSector.toLowerCase().trim()
+        );
+      }
+
+      if (finalExchange) {
+        filtered = filtered.filter(
+          (c) =>
+            c.exchange &&
+            c.exchange.toLowerCase().trim() === finalExchange.toLowerCase().trim()
+        );
+      }
+
+      if (finalAlpha) {
+        filtered = filtered.filter((c) => c.name?.toUpperCase().startsWith(finalAlpha));
+      }
+
+      if (finalSearch) {
+        filtered = filtered.filter(
+          (c) =>
+            c.name.toLowerCase().includes(finalSearch) ||
+            c.ticker.toLowerCase().includes(finalSearch)
+        );
+      }
+
+      filtered.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+      return filtered;
+    },
+    [finalSector, finalExchange, finalAlpha, finalSearch]
+  );
+
   useEffect(() => {
     async function loadData() {
       setLoading(true);
-
       try {
         const response = await axios.get(`${BASE}/api/companies/`);
-        let list = response.data?.companies || [];
-
-        // --------------------------
-        // FILTERS
-        // --------------------------
-
-        // Sector
-        if (finalSector) {
-          list = list.filter(
-            (c) =>
-              c.sector &&
-              c.sector.toLowerCase().trim() === finalSector.toLowerCase().trim()
-          );
-        }
-
-        // Exchange
-        if (finalExchange) {
-          list = list.filter(
-            (c) =>
-              c.exchange &&
-              c.exchange.toLowerCase().trim() === finalExchange.toLowerCase().trim()
-          );
-        }
-
-        // Alphabet filter
-        if (finalAlpha) {
-          list = list.filter((c) =>
-            c.name?.toUpperCase().startsWith(finalAlpha)
-          );
-        }
-
-        // Search filter
-        if (finalSearch) {
-          list = list.filter(
-            (c) =>
-              c.name.toLowerCase().includes(finalSearch) ||
-              c.ticker.toLowerCase().includes(finalSearch)
-          );
-        }
-
-        // Alphabetical sort
-        list.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
-
-        setCompanies(list);
+        const list = response.data?.companies || [];
+        setCompanies(filterCompanies(list));
       } catch (err) {
         console.error("Error loading companies:", err);
+        setCompanies([]);
       }
-
       setLoading(false);
     }
-
     loadData();
-  }, [finalSector, finalAlpha, finalExchange, finalSearch]);
+  }, [BASE, filterCompanies]);
 
-  // ------------------------------
-  // OPEN COMPANY REPORT PAGE
-  // ------------------------------
-  const openCompanyReports = (ticker) => {
-    navigate(`/company-reports/${ticker}`);
+  const openCompanyReports = (company) => {
+    if (!company?.ticker || !company?.exchange) return;
+    navigate(`/company-reports/${company.ticker}/${company.exchange}`);
   };
 
-  // ------------------------------
-  // RENDER
-  // ------------------------------
-  if (loading) {
-    return <div className="loading-message">Fetching companies...</div>;
-  }
+  if (loading) return <div className="loading-message">Fetching companies...</div>;
 
   return (
     <div className="page-container">
       <h1 className="page-title">
-        {finalSector && <>Companies in <span className="highlight">{finalSector}</span></>}
-        {finalAlpha && <>Starting with <span className="highlight">{finalAlpha}</span></>}
-        {finalExchange && <>Listed on <span className="highlight">{finalExchange}</span></>}
+        {finalSector && (
+          <>
+            Companies in <span className="highlight">{finalSector}</span>
+          </>
+        )}
+        {finalAlpha && (
+          <>
+            Starting with <span className="highlight">{finalAlpha}</span>
+          </>
+        )}
+        {finalExchange && (
+          <>
+            Listed on <span className="highlight">{finalExchange}</span>
+          </>
+        )}
         {!finalSector && !finalAlpha && !finalExchange && !finalSearch && "All Companies"}
-        {finalSearch && <>Search results for <span className="highlight">{finalSearch}</span></>}
+        {finalSearch && (
+          <>
+            Search results for <span className="highlight">{finalSearch}</span>
+          </>
+        )}
       </h1>
 
       {companies.length === 0 ? (
@@ -147,7 +134,7 @@ export default function AllCompanies() {
               <tr
                 key={c.id}
                 className="table-row"
-                onClick={() => openCompanyReports(c.ticker)}
+                onClick={() => openCompanyReports(c)}
               >
                 <td data-label="Name">{c.name}</td>
                 <td data-label="Ticker">{c.ticker}</td>
