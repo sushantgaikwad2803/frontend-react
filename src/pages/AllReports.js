@@ -1,70 +1,72 @@
-import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useParams} from "react-router-dom";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import "./AllReports.css";
 
 export default function AllReports() {
-  const { ticker: tickerParam } = useParams();
-  const location = useLocation();
-  const navigate = useNavigate();
+  const { ticker: tickerParam, exchange: exchangeParam } = useParams();
+  // const navigate = useNavigate();
 
-  const ticker =
-    tickerParam ||
-    new URLSearchParams(location.search).get("ticker") ||
-    null;
+  const ticker = tickerParam || null;
+  const exchange = exchangeParam || null;
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showMore, setShowMore] = useState(false);
 
-  const BASE = process.env.REACT_APP_API_URL;
+  const BASE_URL = process.env.REACT_APP_API_URL;
 
-  
+  // Normalize URL helper
+  const normalizeUrl = useCallback(
+    (url) => {
+      if (!url) return null;
+      url = url.trim();
+      if (url.startsWith("http")) return url;
+      return `${BASE_URL}${url.startsWith("/") ? "" : "/"}${url}`;
+    },
+    [BASE_URL]
+  );
 
-  // Normalize URLs: keep absolute URLs (Cloudinary) as-is, add BASE_URL to relative URLs
-  const normalizeUrl = (u) => {
-    if (!u) return null;
-    u = u.trim();
-    return u.startsWith("http") ? u : BASE + (u.startsWith("/") ? "" : "/") + u;
-  };
-
+  // Fetch company + reports
   useEffect(() => {
-    if (!ticker) return;
+    if (!ticker || !exchange) return;
 
     async function loadData() {
+      setLoading(true);
       try {
-        setLoading(true);
-        const res = await axios.get(`${BASE}/company-reports/${ticker}/`);
+        const res = await axios.get(
+          `${BASE_URL}/company-reports/${ticker}/${exchange}/`
+        );
 
-        const formatted = {
+        const formattedReports = (res.data.reports || []).map((r) => ({
+          ...r,
+          report_pdf: normalizeUrl(r.pdf_url),
+          thumbnail_url: normalizeUrl(r.thumbnail_url),
+        }));
+
+        setData({
           ...res.data,
           logo: normalizeUrl(res.data.logo),
-          reports: (res.data.reports || []).map((r) => ({
-            ...r,
-            report_pdf: normalizeUrl(r.pdf_url),
-            thumbnail_url: normalizeUrl(r.thumbnail_url),
-          })),
-        };
-
-        setData(formatted);
+          reports: formattedReports,
+        });
       } catch (err) {
-        console.error("Error fetching company:", err);
-        setData(err.response?.status === 404 ? null : {});
+        console.error("Error fetching company reports:", err);
+        setData(null);
       } finally {
         setLoading(false);
       }
     }
 
     loadData();
-  }, [ticker]);
+  }, [ticker, exchange, BASE_URL, normalizeUrl]);
 
-  if (!ticker) return <p className="no-data-message">No ticker provided.</p>;
+  // Early returns
+  if (!ticker || !exchange) return <p className="no-data-message">Invalid company request.</p>;
   if (loading) return <p className="loading-message">Loading…</p>;
-  if (data === null) return <p className="no-data-message">Company not found.</p>;
+  if (!data) return <p className="no-data-message">Company not found.</p>;
 
   const {
     company_name,
-    exchange,
     sector,
     industry,
     employee_count,
@@ -76,51 +78,39 @@ export default function AllReports() {
     report_message,
   } = data;
 
-  // Most recent report
-  const mostRecent = reports.length
-    ? [...reports].sort((a, b) => (b.year || 0) - (a.year || 0))[0]
-    : null;
-
-  const remaining = mostRecent
-    ? reports.filter((r) => r.id !== mostRecent.id)
-    : reports;
+  const mostRecent = reports.length ? [...reports].sort((a, b) => (b.year || 0) - (a.year || 0))[0] : null;
+  const remainingReports = mostRecent ? reports.filter((r) => r.id !== mostRecent.id) : reports;
 
   const MIN = 6;
-  const visibleReports = showMore ? remaining : remaining.slice(0, MIN);
+  const visibleReports = showMore ? remainingReports : remainingReports.slice(0, MIN);
 
   return (
     <div className="page-container">
-      {company_name ? (
-        <h1 className="main-title">{company_name} ({ticker})</h1>
-      ) : (
-        <p className="no-data-message">Company info not available.</p>
-      )}
+      <h1 className="main-title">
+        {company_name} ({ticker}) - {exchange}
+      </h1>
 
-      {company_name && (
-        <CompanyInfoCard
-          logo={logo}
-          exchange={exchange}
-          sector={sector}
-          industry={industry}
-          employee_count={employee_count}
-          address={address}
-          description={description}
-          social_links={social_links}
-        />
-      )}
+      <CompanyInfoCard
+        logo={logo}
+        exchange={exchange}
+        sector={sector}
+        industry={industry}
+        employee_count={employee_count}
+        address={address}
+        description={description}
+        social_links={social_links}
+      />
 
-      {/* Most Recent Report */}
       {mostRecent ? (
         <MostRecentCard report={mostRecent} />
       ) : (
         <div className="no-reports-box">
           <h2>No Reports Available</h2>
-          <p>{report_message || "This company does not have any uploaded reports."}</p>
+          <p>{report_message || "This company does not have any reports."}</p>
         </div>
       )}
 
-      {/* All Other Reports */}
-      {remaining.length > 0 && (
+      {remainingReports.length > 0 && (
         <>
           <h2 className="section-heading">All Reports</h2>
           <div className="reports-grid">
@@ -128,8 +118,7 @@ export default function AllReports() {
               <ReportCard key={r.id || r.year} report={r} />
             ))}
           </div>
-
-          {remaining.length > MIN && (
+          {remainingReports.length > MIN && (
             <div className="show-more-container">
               <button className="btn-primary" onClick={() => setShowMore(!showMore)}>
                 {showMore ? "Show Less" : "Show More Reports"}
@@ -142,36 +131,18 @@ export default function AllReports() {
   );
 }
 
-/* -----------------------------------------------------
-   SUB COMPONENTS
------------------------------------------------------ */
+/* ------------------------
+   Sub Components
+------------------------ */
 
-function CompanyInfoCard({
-  logo,
-  exchange,
-  sector,
-  industry,
-  employee_count,
-  address,
-  description,
-  social_links,
-}) {
+// Company Info Card
+function CompanyInfoCard({ logo, exchange, sector, industry, employee_count, address, description }) {
   const [expanded, setExpanded] = useState(false);
-
-  const shortText = description?.length > 200
-    ? description.slice(0, 200) + "..."
-    : description;
+  const shortText = description && description.length > 200 ? description.slice(0, 200) + "..." : description;
 
   return (
     <div className="company-card">
-      <img
-        src={logo || "/fallback-logo.png"}
-        alt="Company Logo"
-        className="company-logo"
-        style={{ maxWidth: "150px", maxHeight: "150px", objectFit: "contain" }}
-        onError={(e) => (e.target.src = "/fallback-logo.png")}
-      />
-
+      <img src={logo || "/fallback-logo.png"} alt="Logo" className="company-logo" onError={(e) => (e.target.src = "/fallback-logo.png")} />
       <div className="company-details">
         {exchange && <p><strong>Exchange:</strong> {exchange}</p>}
         {sector && <p><strong>Sector:</strong> {sector}</p>}
@@ -186,7 +157,7 @@ function CompanyInfoCard({
               {expanded ? description : shortText}
               {description.length > 200 && (
                 <span className="readmore-toggle" onClick={() => setExpanded(!expanded)}>
-                  {expanded ? "Read Less" : "Read More"}
+                  {expanded ? " Read Less" : " Read More"}
                 </span>
               )}
             </p>
@@ -197,23 +168,16 @@ function CompanyInfoCard({
   );
 }
 
+// Most Recent Report Card
 function MostRecentCard({ report }) {
   if (!report) return null;
 
   return (
     <div className="recent-card">
-      <img
-        src={report.thumbnail_url || "/fallback-thumb.jpg"}
-        alt="Recent Report"
-        className="recent-thumb"
-        style={{ maxWidth: "200px", maxHeight: "200px", objectFit: "cover" }}
-        onError={(e) => (e.target.src = "/fallback-thumb.jpg")}
-      />
-
+      <img src={report.thumbnail_url || "/fallback-thumb.jpg"} alt="Thumbnail" className="recent-thumb" onError={(e) => (e.target.src = "/fallback-thumb.jpg")} />
       <div>
         <h2>Most Recent Report</h2>
         <h3>{report.year} Annual Report</h3>
-
         <div className="button-row">
           <a href={report.report_pdf} target="_blank" rel="noreferrer">
             <button className="btn-primary">Open PDF</button>
@@ -227,42 +191,25 @@ function MostRecentCard({ report }) {
   );
 }
 
+// Individual Report Card
 function ReportCard({ report }) {
-
-  const downloadFile = (pdfUrl) => {
-    const link = document.createElement("a");
-    link.href = pdfUrl;
-    link.setAttribute("download", ""); // forces download
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const downloadFile = () => {
+    if (report.id) {
+      window.location.href = `${process.env.REACT_APP_API_URL}/download-report/${report.id}/`;
+    }
   };
 
   return (
     <div className="report-card">
-      <img
-        src={report.thumbnail_url || "/fallback-thumb.jpg"}
-        alt="Thumbnail"
-        className="report-thumb"
-        style={{ maxWidth: "150px", maxHeight: "150px", objectFit: "cover" }}
-        onError={(e) => (e.target.src = "/fallback-thumb.jpg")}
-      />
+      <img src={report.thumbnail_url || "/fallback-thumb.jpg"} alt="Report" className="report-thumb" onError={(e) => (e.target.src = "/fallback-thumb.jpg")} />
       <h3 className="report-year">Year {report.year}</h3>
-
       <div className="button-row">
-        <a href={report.report_pdf} target="_blank" rel="noreferrer">
-          <button className="btn-small">Open</button>
-        </a>
-
-        {/* ✅ Fixed: use `report.report_pdf` instead of `item.pdf_url` */}
-        <button
-           onClick={() => {
-    window.location.href = `http://127.0.0.1:8000/download-report/${report.id}/`;
-  }}
-          className="btn-small"
-        >
-          Download
-        </button>
+        {report.report_pdf && (
+          <a href={report.report_pdf} target="_blank" rel="noreferrer">
+            <button className="btn-small">Open</button>
+          </a>
+        )}
+        <button className="btn-small" onClick={downloadFile}>Download</button>
       </div>
     </div>
   );
