@@ -34,7 +34,7 @@ export default function App() {
           <Route path="/AllCompanies/:exchange" element={<AllCompanies />} />
 
           {/* Company Reports */}
-          <Route path="/company-reports/:ticker" element={<AllReports />} />
+          <Route path="/company-reports/:ticker/:exchange" element={<AllReports />} />
 
           {/* Sector Navigation */}
           <Route path="/sectorslist" element={<SectorList />} />
