@@ -9,9 +9,13 @@ export default function PDFUpload() {
   const [message, setMessage] = useState("");
   const [clicked, setClicked] = useState(false);
 
+  // New state to store results from backend
+  const [results, setResults] = useState([]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setClicked(true);
+    setResults([]); // reset previous results
 
     if (files.length === 0) {
       setMessage("Please select at least one PDF file.");
@@ -20,15 +24,20 @@ export default function PDFUpload() {
     }
 
     const formData = new FormData();
-    files.forEach((file) => formData.append("pdf", file)); // MULTIPLE FILES ✔
+    files.forEach((file) => formData.append("pdf", file));
 
     try {
       const response = await axios.post(uploadUrl, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      setMessage("Upload completed successfully!");
-      console.log("Server Response:", response.data);
+      setMessage("Upload completed!");
+
+      // store backend response results
+      if (response.data.results) {
+        setResults(response.data.results);
+      }
+
     } catch (error) {
       console.error("Upload error:", error);
       setMessage("Upload failed.");
@@ -45,13 +54,12 @@ export default function PDFUpload() {
         <input
           type="file"
           accept="application/pdf"
-          multiple            // 👈 ALLOWS MULTIPLE PDFs ✔
+          multiple
           onChange={(e) => setFiles([...e.target.files])}
           required
         />
         <br /><br />
 
-        {/* Show selected file names */}
         {files.length > 0 && (
           <div style={{ marginBottom: "10px" }}>
             <strong>Selected Files:</strong>
@@ -70,7 +78,7 @@ export default function PDFUpload() {
             border: "none",
             cursor: "pointer",
             color: "white",
-            backgroundColor: clicked ? "#0a7cff" : "#007bff", 
+            backgroundColor: clicked ? "#0a7cff" : "#007bff",
             transition: "0.3s",
             borderRadius: "5px",
             fontSize: "16px",
@@ -81,6 +89,33 @@ export default function PDFUpload() {
       </form>
 
       <p>{message}</p>
+
+      {/* ----------------------------------------------------
+          SHOW SUCCESS & ERROR FILES FROM SERVER RESPONSE
+         ---------------------------------------------------- */}
+      {results.length > 0 && (
+        <div style={{ marginTop: "20px" }}>
+          <h3>Upload Summary</h3>
+
+          <ul>
+            {results.map((item, index) => (
+              <li
+                key={index}
+                style={{
+                  color: item.status === "success" ? "green" : "red",
+                  fontWeight: "bold",
+                  marginBottom: "6px",
+                }}
+              >
+                {item.file} – {item.status.toUpperCase()}
+                {item.status === "error" && (
+                  <> (Reason: {item.reason})</>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
