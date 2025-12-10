@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSearch,
-  faShoppingCart,
   faChevronDown,
   faChevronUp,
   faTimes,
@@ -19,7 +18,9 @@ const BrowseMenu = React.memo(({ closeMobileMenu }) => {
   const menuRef = useRef(null);
   const navigate = useNavigate();
 
-  const toggleMenu = () => setIsOpen((prev) => !prev);
+  const toggleMenu = useCallback(() => {
+    setIsOpen((prev) => !prev);
+  }, []);
 
   const closeMenu = useCallback(() => {
     setIsOpen(false);
@@ -34,12 +35,12 @@ const BrowseMenu = React.memo(({ closeMobileMenu }) => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen, closeMenu]);
 
   const categories = [
     { id: "Sector", name: "Sector", route: "/sectorslist" },
-    // { id: "apparel", name: "Apparel & Fashion", route: "#apparel" },
     { id: "Other Filter", name: "Other Filter", route: "/OtherFilter" },
   ];
 
@@ -64,7 +65,7 @@ const BrowseMenu = React.memo(({ closeMobileMenu }) => {
               <button
                 className="browse-link-btn"
                 onClick={() => {
-                  if (cat.route.startsWith("/")) navigate(cat.route);
+                  navigate(cat.route);
                   closeMenu();
                 }}
               >
@@ -136,7 +137,6 @@ const SearchBar = React.memo(({ isSearchOpen, closeSearchBar, searchRef }) => {
 const Header = () => {
   const navigate = useNavigate();
 
-  const [cartItemCount] = useState(3);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -146,15 +146,15 @@ const Header = () => {
   const closeSearchBar = useCallback(() => setIsSearchOpen(false), []);
   const closeMobileMenu = useCallback(() => setIsMobileMenuOpen(false), []);
 
-  const toggleSearchBar = () => {
+  const toggleSearchBar = useCallback(() => {
     setIsSearchOpen((prev) => !prev);
     setIsMobileMenuOpen(false);
-  };
+  }, []);
 
-  const toggleMobileMenu = () => {
+  const toggleMobileMenu = useCallback(() => {
     setIsMobileMenuOpen((prev) => !prev);
     setIsSearchOpen(false);
-  };
+  }, []);
 
   useEffect(() => {
     const globalHandler = (event) => {
@@ -199,7 +199,6 @@ const Header = () => {
   return (
     <div className="header-wrapper">
       <header className="ecom-header-container">
-        {/* LOGO with navigate("/") */}
         <div
           className="logo-section"
           onClick={() => navigate("/")}
@@ -210,7 +209,7 @@ const Header = () => {
 
         <nav className="nav-and-actions">
           <div className="desktop-nav-links">
-            <BrowseMenu />
+            <BrowseMenu closeMobileMenu={closeMobileMenu} />
           </div>
 
           <div className="action-buttons">
@@ -233,13 +232,6 @@ const Header = () => {
                 <FontAwesomeIcon icon={faSearch} />
               </button>
             </div>
-
-            {/* <button className="cart-button matching-color">
-              <FontAwesomeIcon icon={faShoppingCart} />
-              {cartItemCount > 0 && (
-                <span className="cart-badge">{cartItemCount}</span>
-              )}
-            </button> */}
           </div>
         </nav>
       </header>
@@ -257,7 +249,7 @@ const Header = () => {
         closeSearchBar={closeSearchBar}
         searchRef={searchRef}
       />
-    </div> 
+    </div>
   );
 };
 
