@@ -7,18 +7,29 @@ export default function RandomLogo() {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
-  // Laptop IP address → required for mobile access
-   const BASE = process.env.REACT_APP_API_URL;
+  // Base API URL
+  const BASE = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    axios
-      .get(`${BASE}/random-logos/`)   // ✅ FIXED HERE
-      .then((res) => setData(res.data.companies))
-      .catch((err) => console.error(err));
-  }, []);
+    async function fetchLogos() {
+      try {
+        const res = await axios.get(`${BASE}/random-logos/`);
+        // Ensure data is an array
+        setData(res.data.companies || []);
+      } catch (err) {
+        console.error("Error fetching logos:", err);
+      }
+    }
 
-  const goToReports = (ticker) => {
-    navigate(`/company-reports/${ticker}`);
+    fetchLogos();
+  }, [BASE]);
+
+  // Navigate to company reports page with both ticker & exchange
+  const goToReports = (company) => {
+    if (!company?.ticker || !company?.exchange) return;
+
+    // Navigate using both ticker and exchange
+    navigate(`/company-reports/${company.ticker}/${company.exchange}`);
   };
 
   return (
@@ -27,14 +38,19 @@ export default function RandomLogo() {
 
       <div className="logo-wrapper1">
         <div className="logo-grid1">
-          {data.map((item) => (
+          {data.map((company) => (
             <div
-              key={item.id}
+              key={company.id}
               className="logo-card1"
-              onClick={() => goToReports(item.ticker)}
+              onClick={() => goToReports(company)}
             >
-              <img src={item.logo} alt={item.name} className="company-logo1" />
-              <p>{item.ticker}</p>
+              <img
+                src={company.logo || "/fallback-logo.png"}
+                alt={company.name}
+                className="company-logo1"
+                onError={(e) => (e.target.src = "/fallback-logo.png")}
+              />
+              <p>{company.ticker}</p>
             </div>
           ))}
         </div>
