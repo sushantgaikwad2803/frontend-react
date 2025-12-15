@@ -1,115 +1,112 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function PDFUpload() {
+export default function AutoPDFUpload() {
   const BASE = process.env.REACT_APP_API_URL;
-  const uploadUrl = `${BASE}/upload-pdf/`;
+  const autoUploadUrl = `${BASE}/auto-upload-pdf/`;
 
-  const [files, setFiles] = useState([]);
+  const [url, setUrl] = useState("");
+  const [exchange, setExchange] = useState("");
+  const [ticker, setTicker] = useState("");
+
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [clicked, setClicked] = useState(false);
-
-  // New state to store results from backend
   const [results, setResults] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setClicked(true);
-    setResults([]); // reset previous results
+    setLoading(true);
+    setMessage("");
+    setResults([]);
 
-    if (files.length === 0) {
-      setMessage("Please select at least one PDF file.");
-      setClicked(false);
+    if (!url || !exchange || !ticker) {
+      setMessage("All fields are required.");
+      setLoading(false);
       return;
     }
 
     const formData = new FormData();
-    files.forEach((file) => formData.append("pdf", file));
+    formData.append("url", url);
+    formData.append("exchange", exchange);
+    formData.append("ticker", ticker);
 
     try {
-      const response = await axios.post(uploadUrl, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await axios.post(autoUploadUrl, formData);
 
-      setMessage("Upload completed!");
-
-      // store backend response results
-      if (response.data.results) {
-        setResults(response.data.results);
-      }
-
+      setMessage("Auto PDF upload completed!");
+      setResults(response.data.results || []);
     } catch (error) {
-      console.error("Upload error:", error);
-      setMessage("Upload failed.");
-    } finally {
-      setTimeout(() => setClicked(false), 1000);
+      console.error("Auto upload error:", error);
+      setMessage("Auto upload failed due to server error.");
     }
+
+    setLoading(false);
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Upload Multiple PDFs</h2>
+    <div style={{ padding: "20px", maxWidth: "600px" }}>
+      <h2>Auto Upload PDF Reports from URL</h2>
 
       <form onSubmit={handleSubmit}>
         <input
-          type="file"
-          accept="application/pdf"
-          multiple
-          onChange={(e) => setFiles([...e.target.files])}
-          required
+          type="text"
+          placeholder="Reports Page URL"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
         />
-        <br /><br />
 
-        {files.length > 0 && (
-          <div style={{ marginBottom: "10px" }}>
-            <strong>Selected Files:</strong>
-            <ul>
-              {files.map((f, i) => (
-                <li key={i}>{f.name}</li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <input
+          type="text"
+          placeholder="Exchange (e.g. ASX)"
+          value={exchange}
+          onChange={(e) => setExchange(e.target.value)}
+          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+        />
+
+        <input
+          type="text"
+          placeholder="Ticker (e.g. AEI)"
+          value={ticker}
+          onChange={(e) => setTicker(e.target.value)}
+          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+        />
 
         <button
           type="submit"
+          disabled={loading}
           style={{
             padding: "10px 20px",
             border: "none",
             cursor: "pointer",
             color: "white",
-            backgroundColor: clicked ? "#0a7cff" : "#007bff",
-            transition: "0.3s",
+            backgroundColor: "#007bff",
             borderRadius: "5px",
             fontSize: "16px",
           }}
         >
-          {clicked ? "Uploading..." : "Upload All"}
+          {loading ? "Processing..." : "Auto Upload"}
         </button>
       </form>
 
-      <p>{message}</p>
+      <p style={{ marginTop: "10px" }}>{message}</p>
 
-      {/* ----------------------------------------------------
-          SHOW SUCCESS & ERROR FILES FROM SERVER RESPONSE
-         ---------------------------------------------------- */}
       {results.length > 0 && (
         <div style={{ marginTop: "20px" }}>
           <h3>Upload Summary</h3>
-
           <ul>
-            {results.map((item, index) => (
+            {results.map((res, index) => (
               <li
                 key={index}
                 style={{
-                  color: item.status === "success" ? "green" : "red",
+                  marginBottom: "8px",
                   fontWeight: "bold",
-                  marginBottom: "6px",
+                  color: res.status === "success" ? "green" : "red",
                 }}
               >
-                {item.file} – {item.status.toUpperCase()}
-                {item.status === "error" && (
-                  <> (Reason: {item.reason})</>
+                {res.year || res.pdf} — {res.status.toUpperCase()}
+                {res.status === "error" && (
+                  <> (Reason: {res.reason})</>
                 )}
               </li>
             ))}
