@@ -12,6 +12,7 @@ import SectorList from "./pages/SectorList";
 import OtherFilters from "./pages/OtherFilters";
 import UploadPDF from "./pages/exa";
 import UPImage from "./pages/exa1";
+import UPImage1 from "./pages/exa2";
 
 // If Footer is in pages folder, this import is fine
 import Footer from "./pages/Footer";
@@ -46,7 +47,9 @@ export default function App() {
 
           <Route path="/upload-pdf" element={<UploadPDF />} />
 
-           <Route path="/upload-logo" element={<UPImage />} />
+          <Route path="/upload-logo" element={<UPImage />} />
+
+          <Route path="/upload-pdf1" element={<UPImage1 />} />
           
         </Routes>
 
