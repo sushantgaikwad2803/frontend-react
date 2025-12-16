@@ -20,7 +20,7 @@ export default function AutoPDFUpload() {
     setResults([]);
 
     if (!url || !exchange || !ticker) {
-      setMessage("All fields are required.");
+      setMessage("❌ All fields are required.");
       setLoading(false);
       return;
     }
@@ -31,21 +31,38 @@ export default function AutoPDFUpload() {
     formData.append("ticker", ticker);
 
     try {
-      const response = await axios.post(autoUploadUrl, formData);
+      const response = await axios.post(autoUploadUrl, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        timeout: 120000, // ⏱ 2 min (PDF uploads)
+      });
 
-      setMessage("Auto PDF upload completed!");
+      setMessage("✅ Auto PDF upload completed.");
       setResults(response.data.results || []);
     } catch (error) {
       console.error("Auto upload error:", error);
-      setMessage("Auto upload failed due to server error.");
-    }
 
-    setLoading(false);
+      // 🔥 SHOW REAL BACKEND ERROR
+      const backendMessage =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        "Server error occurred.";
+
+      setMessage(`❌ Auto upload failed: ${backendMessage}`);
+
+      // 🔥 SHOW PARTIAL RESULTS IF ANY
+      if (error.response?.data?.results) {
+        setResults(error.response.data.results);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "600px" }}>
-      <h2>Auto Upload PDF Reports from URL</h2>
+    <div style={{ padding: "20px", maxWidth: "650px" }}>
+      <h2>Auto Upload PDF Reports</h2>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -78,35 +95,50 @@ export default function AutoPDFUpload() {
           style={{
             padding: "10px 20px",
             border: "none",
-            cursor: "pointer",
+            cursor: loading ? "not-allowed" : "pointer",
             color: "white",
-            backgroundColor: "#007bff",
+            backgroundColor: loading ? "#999" : "#007bff",
             borderRadius: "5px",
             fontSize: "16px",
           }}
         >
-          {loading ? "Processing..." : "Auto Upload"}
+          {loading ? "Processing PDFs..." : "Auto Upload"}
         </button>
       </form>
 
-      <p style={{ marginTop: "10px" }}>{message}</p>
+      {message && (
+        <p style={{ marginTop: "12px", fontWeight: "bold" }}>{message}</p>
+      )}
 
       {results.length > 0 && (
         <div style={{ marginTop: "20px" }}>
           <h3>Upload Summary</h3>
-          <ul>
+          <ul style={{ paddingLeft: "20px" }}>
             {results.map((res, index) => (
               <li
                 key={index}
                 style={{
                   marginBottom: "8px",
-                  fontWeight: "bold",
                   color: res.status === "success" ? "green" : "red",
+                  fontWeight: "bold",
                 }}
               >
                 {res.year || res.pdf} — {res.status.toUpperCase()}
-                {res.status === "error" && (
-                  <> (Reason: {res.reason})</>
+                {res.status === "error" && res.reason && (
+                  <div style={{ fontWeight: "normal", fontSize: "14px" }}>
+                    Reason: {res.reason}
+                  </div>
+                )}
+                {res.status === "success" && res.pdf_url && (
+                  <div style={{ fontWeight: "normal", fontSize: "14px" }}>
+                    <a
+                      href={res.pdf_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View PDF
+                    </a>
+                  </div>
                 )}
               </li>
             ))}
