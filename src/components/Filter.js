@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Filter.css";
 
+
 /* ------------------ IMPORT EXCHANGE LOGOS ------------------ */
 import slid1 from '../media/AIM.png';
 import slid2 from '../media/AMEX.png';
