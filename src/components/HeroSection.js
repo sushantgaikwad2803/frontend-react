@@ -10,6 +10,7 @@ import reportCard4 from '../media/report2.webp';
 import reportCard5 from '../media/report5.jpg'; 
 import reportCard6 from '../media/report6.webp';
 
+
 const HeroSection = () => {
   const cardsRef = useRef([]);  
 
