@@ -10,7 +10,9 @@ export default function RandomReport() {
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
-  const BASE = process.env.REACT_APP_API_URL;
+
+  const BASE = process.env.REACT_APP_API_URL; // Your Django backen
+
 
   // -----------------------------
   // PROCESS RESULT FUNCTION
@@ -118,6 +120,7 @@ export default function RandomReport() {
                 >
                   View Reports
                 </button>
+
               </div>
             </div>
           );
