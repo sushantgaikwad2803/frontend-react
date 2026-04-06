@@ -22,11 +22,11 @@ export default function InvestorsSection() {
         Investors from around the world turn to AnnualReports.com for timely insights into global business activity.
       </p>
 
-      // <div className="investor-logos">
-      //   {logos.map((logo, index) => (
-      //     <img key={index} src={logo} alt="Investor Logo" className="investor-logo" />
-      //   ))}
-      // </div>
+      {/* <div className="investor-logos">
+        {logos.map((logo, index) => (
+          <img key={index} src={logo} alt="Investor Logo" className="investor-logo" />
+        ))}
+      </div> */}
     </div>
   );
 }
