@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Homepage.css';
-import HomepImage from '../media/Homep.png';
+// import HomepImage from '../media/Homep.png';
 import slid1 from '../media/AIM.png';
 import slid2 from '../media/AMEX.png';
 import slid3 from '../media/asx.jpg';
