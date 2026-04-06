@@ -204,7 +204,7 @@ const Header = () => {
           onClick={() => navigate("/")}
           style={{ cursor: "pointer" }}
         >
-          <img src="../media/AIM.png" alt="Logo" className="shop-logo" />
+          <img src="https://firebasestorage.googleapis.com/v0/b/report-4b52b.firebasestorage.app/o/logo%2Flogo1.png?alt=media&token=daf809e5-6fac-43ae-a80b-df2241cb197f" alt="Logo" className="shop-logo" />
         </div>
 
         <nav className="nav-and-actions">
@@ -232,6 +232,14 @@ const Header = () => {
                 <FontAwesomeIcon icon={faSearch} />
               </button>
             </div>
+
+            {/* <button className="cart-button matching-color">
+              <FontAwesomeIcon icon={faShoppingCart} />
+              {cartItemCount > 0 && (
+                <span className="cart-badge">{cartItemCount}</span>
+              )}
+            </button> */}
+
           </div>
         </nav>
       </header>
