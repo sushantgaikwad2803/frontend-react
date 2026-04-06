@@ -18,6 +18,7 @@ import InvestorsSection from '../components/InvestorsSection';
 import Filter from '../components/Filter';
 
 
+
 const Homepage = () => {
   const trackRef = useRef(null);
   const navigate = useNavigate();
