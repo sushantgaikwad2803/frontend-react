@@ -39,14 +39,14 @@ export default function Footer() {
         <div className="footer-section support">
           <h4>Support</h4>
           <ul>
-            <li onClick={() => navigate("/privacy")}><a>Privacy Policy</a></li>
+            {/* <li onClick={() => navigate("/privacy")}><a>Privacy Policy</a></li> */}
             <li onClick={() => navigate("/terms")}><a>Terms & Conditions</a></li>
             <li onClick={() => navigate("/faq")}><a>FAQ</a></li>
           </ul>
         </div>
 
         {/* Social */}
-        <div className="footer-section social">
+        {/* <div className="footer-section social">
           <h4>Connect</h4>
           <div className="social-icons">
             <a href="#"><FaFacebookF /></a>
@@ -55,7 +55,7 @@ export default function Footer() {
             <a href="#"><FaInstagram /></a>
             <a href="#"><FaYoutube /></a>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="footer-bottom">
