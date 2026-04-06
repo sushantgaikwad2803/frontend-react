@@ -1,12 +1,12 @@
 import React from "react";
 import "./Footer.css";
-import {
-  FaFacebookF,
-  FaTwitter,
-  FaYoutube,
-  FaInstagram,
-  FaLinkedin,
-} from "react-icons/fa6";
+// import {
+//   FaFacebookF,
+//   FaTwitter,
+//   FaYoutube,
+//   FaInstagram,
+//   FaLinkedin,
+// } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
 export default function Footer() {
