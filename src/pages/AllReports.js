@@ -244,12 +244,33 @@ function MostRecentCard({ report }) {
         <div className="button-row">
           {report.report_pdf && (
             <>
-              <a href={report.report_pdf} target="_blank" rel="noreferrer">
-                <button className="btn-primary">Open PDF</button>
-              </a>
-              <a href={report.report_pdf} download>
-                <button className="btn-primary">Download</button>
-              </a>
+              {/* OPEN */}
+              <button
+                className="btn-primary"
+                onClick={() =>
+                  window.open(
+                    `${process.env.REACT_APP_API_URL}/download-report/${report.id}/?mode=view`,
+                    "_blank"
+                  )
+                }
+              >
+                Open PDF
+              </button>
+
+              {/* DOWNLOAD */}
+              <button
+                className="btn-primary"
+                onClick={() => {
+                  const link = document.createElement("a");
+                  link.href = report.report_pdf;
+                  link.download = `${report.year}.pdf`;
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+              >
+                Download
+              </button>
             </>
           )}
         </div>
@@ -259,9 +280,19 @@ function MostRecentCard({ report }) {
 }
 
 function ReportCard({ report }) {
+  const openFile = () => {
+    if (report.id) {
+      window.open(
+        `${process.env.REACT_APP_API_URL}/download-report/${report.id}/?mode=view`,
+        "_blank"
+      );
+    }
+  };
+
   const downloadFile = () => {
     if (report.id) {
-      window.location.href = `${process.env.REACT_APP_API_URL}/download-report/${report.id}/`;
+      window.location.href =
+        `${process.env.REACT_APP_API_URL}/download-report/${report.id}/?mode=download`;
     }
   };
 
@@ -275,11 +306,9 @@ function ReportCard({ report }) {
       />
       <h3 className="report-year">Year {report.year}</h3>
       <div className="button-row">
-        {report.report_pdf && (
-          <a href={report.report_pdf} target="_blank" rel="noreferrer">
-            <button className="btn-small">Open</button>
-          </a>
-        )}
+        <button className="btn-small" onClick={openFile}>
+          Open
+        </button>
         <button className="btn-small" onClick={downloadFile}>
           Download
         </button>
