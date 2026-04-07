@@ -2,14 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import './Herosection.css';
 
 // Your image imports
-import worldMapBackground from '../media/s.avif';
+// import worldMapBackground from '../media/s.avif';
 import reportCard1 from '../media/report1.png';
 import reportCard2 from '../media/report4.avif';
 import reportCard3 from '../media/report3.webp';
 import reportCard4 from '../media/report2.webp'; 
 import reportCard5 from '../media/report5.jpg'; 
 import reportCard6 from '../media/report6.webp';
-
 
 const HeroSection = () => {
   const cardsRef = useRef([]);  
@@ -24,18 +23,19 @@ const HeroSection = () => {
         });
       },
       {
-        threshold: 0.3, // Trigger when 30% of the element is visible
-        rootMargin: '0px 0px -50px 0px' // Trigger slightly before element enters viewport
+        threshold: 0.3,
+        rootMargin: '0px 0px -50px 0px'
       }
     );
-
-    // Observe all cards
-    cardsRef.current.forEach((card) => {
+  
+    // Make a copy of refs to use safely
+    const cards = cardsRef.current;
+    cards.forEach((card) => {
       if (card) observer.observe(card);
     });
-
+  
     return () => {
-      cardsRef.current.forEach((card) => {
+      cards.forEach((card) => {
         if (card) observer.unobserve(card);
       });
     };
