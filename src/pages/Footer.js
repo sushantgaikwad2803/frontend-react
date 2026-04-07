@@ -28,10 +28,22 @@ export default function Footer() {
         <div className="footer-section links">
           <h4>Quick Links</h4>
           <ul>
-            <li onClick={() => navigate("/")}><a>Home</a></li>
-            <li onClick={() => navigate("/sectorslist")}><a>Sector</a></li>
-            <li onClick={() => navigate("/OtherFilter")}><a>Other Filter</a></li>
-            <li onClick={() => navigate("/contact")}><a>Contact</a></li>
+            <li><a href="/" onClick={(e) => { e.preventDefault(); navigate("/"); }}>Home</a></li>
+            <li>
+              <a href="/sectorslist" onClick={(e) => { e.preventDefault(); navigate("/sectorslist"); }}>
+                Sector
+              </a>
+            </li>
+            <li>
+              <a href="/OtherFilter" onClick={(e) => { e.preventDefault(); navigate("/OtherFilter"); }}>
+                Other Filter
+              </a>
+            </li>
+            <li>
+              <a href="/contact" onClick={(e) => { e.preventDefault(); navigate("/contact"); }}>
+                Contact
+              </a>
+            </li>
           </ul>
         </div>
 
@@ -40,8 +52,16 @@ export default function Footer() {
           <h4>Support</h4>
           <ul>
             {/* <li onClick={() => navigate("/privacy")}><a>Privacy Policy</a></li> */}
-            <li onClick={() => navigate("/terms")}><a>Terms & Conditions</a></li>
-            <li onClick={() => navigate("/faq")}><a>FAQ</a></li>
+            <li>
+              <a href="/terms" onClick={(e) => { e.preventDefault(); navigate("/terms"); }}>
+                Terms & Conditions
+              </a>
+            </li>
+            <li>
+              <a href="/faq" onClick={(e) => { e.preventDefault(); navigate("/faq"); }}>
+                FAQ
+              </a>
+            </li>
           </ul>
         </div>
 
