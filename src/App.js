@@ -3,6 +3,7 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 
 import Header from "./components/Header";
 import HomePage from "./pages/Homepage";
@@ -22,43 +23,45 @@ import "./index.css";
 
 export default function App() {
   return (
-    <Router>
-      <div className="app-shell">
+    <HelmetProvider>
+      <Router>
+        <div className="app-shell">
 
-        <Header />
+          <Header />
 
-        <Routes>
-          {/* Home */}
-          <Route path="/" element={<HomePage />} />
+          <Routes>
+            {/* Home */}
+            <Route path="/" element={<HomePage />} />
 
-          {/* All Companies Pages */}
-          <Route path="/AllCompanies" element={<AllCompanies />} />
-          <Route path="/AllCompanies/:exchange" element={<AllCompanies />} />
+            {/* All Companies Pages */}
+            <Route path="/AllCompanies" element={<AllCompanies />} />
+            <Route path="/AllCompanies/:exchange" element={<AllCompanies />} />
 
-          {/* Company Reports */}
-          <Route path="/company-reports/:ticker/:exchange" element={<AllReports />} />
+            {/* Company Reports */}
+            <Route path="/company-reports/:ticker/:exchange" element={<AllReports />} />
 
-          {/* Sector Navigation */}
-          <Route path="/sectorslist" element={<SectorList />} />
-          <Route path="/companies/sector/:sector" element={<AllCompanies />} />
+            {/* Sector Navigation */}
+            <Route path="/sectorslist" element={<SectorList />} />
+            <Route path="/companies/sector/:sector" element={<AllCompanies />} />
 
-          {/* Filters */}
-          <Route path="/companies/alpha/:alpha" element={<AllCompanies />} />
-          <Route path="/OtherFilter" element={<OtherFilters />} />
+            {/* Filters */}
+            <Route path="/companies/alpha/:alpha" element={<AllCompanies />} />
+            <Route path="/OtherFilter" element={<OtherFilters />} />
 
-          <Route path="/upload-pdf" element={<UploadPDF />} />
+            <Route path="/upload-pdf" element={<UploadPDF />} />
 
-          <Route path="/upload-logo" element={<UPImage />} />
+            <Route path="/upload-logo" element={<UPImage />} />
 
-          <Route path="/upload-pdf1" element={<UPImage1 />} />
+            <Route path="/upload-pdf1" element={<UPImage1 />} />
 
-          <Route path="/terms" element={<TermsConditions />} />
-          
-        </Routes>
+            <Route path="/terms" element={<TermsConditions />} />
 
-        {/* Footer inside Router but outside Routes */}
-        <Footer />
-      </div>
-    </Router>
+          </Routes>
+
+          {/* Footer inside Router but outside Routes */}
+          <Footer />
+        </div>
+      </Router>
+    </HelmetProvider>
   );
 }
