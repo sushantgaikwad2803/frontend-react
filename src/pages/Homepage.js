@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from "react-helmet-async";
 import './Homepage.css';
 // import HomepImage from '../media/Homep.png';
 import slid1 from '../media/AIM.png';
@@ -66,6 +67,31 @@ const Homepage = () => {
   }, []);
 
   return (
+    <>
+    <Helmet>
+      <title>Annual Reports of Indian Companies | AR Annual Report</title>
+      <meta 
+        name="description" 
+        content="Download latest annual reports of Indian companies like TCS, Infosys, Reliance in PDF format." 
+      />
+
+      {/* ✅ Google Verification (IMPORTANT) */}
+      <meta 
+        name="google-site-verification" 
+        content="bc6r5V5HAg-ia7AMz9s8GsbHVF8jnGN4Ez1S1" 
+      />
+
+      {/* ✅ Schema (SEO Boost) */}
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "AR Annual Report",
+          "url": "https://arannualreport.com"
+        })}
+      </script>
+    </Helmet>
+
     <div className="homepage">
       <HeroSection />
 
@@ -102,6 +128,7 @@ const Homepage = () => {
       <InvestorsSection/>
       <Filter/>
     </div>
+    </>
   );
 };
 
