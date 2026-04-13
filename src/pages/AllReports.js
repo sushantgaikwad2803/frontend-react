@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
+import { Helmet } from "react-helmet-async";
 import axios from "axios";
 import {
   FaInstagram,
@@ -96,52 +97,88 @@ export default function AllReports() {
     : remainingReports.slice(0, MIN);
 
   return (
-    <div className="page-container">
-      <h1 className="main-title">
-        {company_name} ({ticker}) - {exchange}
-      </h1>
 
-      <CompanyInfoCard
-        logo={logo}
-        exchange={exchange}
-        sector={sector}
-        industry={industry}
-        employee_count={employee_count}
-        address={address}
-        description={description}
-        social_links={social_links}
-      />
+    <>
+      <Helmet>
+        <title>
+          {company_name
+            ? `${company_name} (${ticker}) Annual Report PDF Download`
+            : "Company Annual Report"}
+        </title>
 
-      {mostRecent ? (
-        <MostRecentCard report={mostRecent} />
-      ) : (
-        <div className="no-reports-box">
-          <h2>No Reports Available</h2>
-          <p>{report_message || "This company does not have any reports."}</p>
-        </div>
-      )}
+        <meta
+          name="description"
+          content={
+            company_name
+              ? `Download ${company_name} (${ticker}) annual reports PDF. View latest and past financial reports.`
+              : "Download company annual reports in PDF format."
+          }
+        />
 
-      {remainingReports.length > 0 && (
-        <>
-          <h2 className="section-heading">All Reports</h2>
-          <div className="reports-grid">
-            {visibleReports.map((r) => (
-              <ReportCard key={r.id || r.year} report={r} />
-            ))}
+        {/* ✅ Dynamic Keywords */}
+        <meta
+          name="keywords"
+          content={`${company_name}, ${ticker}, ${exchange}, annual report PDF, financial reports`}
+        />
+
+        {/* ✅ Schema (VERY POWERFUL) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": company_name,
+            "url": window.location.href,
+            "logo": logo || "",
+          })}
+        </script>
+      </Helmet>
+      <div className="page-container">
+        <h1 className="main-title">
+          {company_name} ({ticker}) - {exchange}
+        </h1>
+
+        <CompanyInfoCard
+          logo={logo}
+          exchange={exchange}
+          sector={sector}
+          industry={industry}
+          employee_count={employee_count}
+          address={address}
+          description={description}
+          social_links={social_links}
+        />
+
+        {mostRecent ? (
+          <MostRecentCard report={mostRecent} />
+        ) : (
+          <div className="no-reports-box">
+            <h2>No Reports Available</h2>
+            <p>{report_message || "This company does not have any reports."}</p>
           </div>
-          {remainingReports.length > MIN && (
-            <div className="show-more-container">
-              <button
-                className="btn-primary"
-                onClick={() => setShowMore(!showMore)}
-              >
-                {showMore ? "Show Less" : "Show More Reports"}
-              </button>
+        )}
+
+        {remainingReports.length > 0 && (
+          <>
+            <h2 className="section-heading">All Reports</h2>
+            <div className="reports-grid">
+              {visibleReports.map((r) => (
+                <ReportCard key={r.id || r.year} report={r} />
+              ))}
             </div>
-          )}
-        </>
-      )}
-    </div>
+            {remainingReports.length > MIN && (
+              <div className="show-more-container">
+                <button
+                  className="btn-primary"
+                  onClick={() => setShowMore(!showMore)}
+                >
+                  {showMore ? "Show Less" : "Show More Reports"}
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </>
   );
 }
 
