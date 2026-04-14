@@ -49,8 +49,8 @@
 }
 
 .shop-logo {
-  height: 45px;
-  width: auto;
+  height: 70px;
+  width: 70px;
   object-fit: contain;
   transition: transform 0.3s ease;
 }
