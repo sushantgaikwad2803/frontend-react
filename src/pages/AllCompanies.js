@@ -118,33 +118,34 @@ export default function AllCompanies() {
       {companies.length === 0 ? (
         <p className="no-results-message">No companies found.</p>
       ) : (
-        <table className="companies-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Ticker</th>
-              <th>Sector</th>
-              <th>Industry</th>
-              <th>Exchange</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {companies.map((c) => (
-              <tr
-                key={c.id}
-                className="table-row"
-                onClick={() => openCompanyReports(c)}
-              >
-                <td data-label="Name">{c.name}</td>
-                <td data-label="Ticker">{c.ticker}</td>
-                <td data-label="Sector">{c.sector}</td>
-                <td data-label="Industry">{c.industry}</td>
-                <td data-label="Exchange">{c.exchange}</td>
+        <div className="table-container">
+          <table className="companies-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Ticker</th>
+                <th>Sector</th>
+                <th>Industry</th>
+                <th>Exchange</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {companies.map((c) => (
+                <tr
+                  key={c.id}
+                  className="table-row"
+                  onClick={() => openCompanyReports(c)}
+                >
+                  <td data-label="Name">{c.name}</td>
+                  <td data-label="Ticker">{c.ticker}</td>
+                  <td data-label="Sector">{c.sector}</td>
+                  <td data-label="Industry">{c.industry}</td>
+                  <td data-label="Exchange">{c.exchange}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
