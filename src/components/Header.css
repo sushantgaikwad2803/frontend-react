@@ -19,6 +19,22 @@
   --hover-bg: #F0F7F8;
   --shadow: rgba(0, 0, 0, 0.06);
   --overlay: rgba(44, 62, 80, 0.55);
+
+  /* Layout */
+  --header-height: 70px;
+  --header-height-mobile: 60px;
+  --header-height-small-mobile: 55px;
+  --container-max-width: 1200px;
+  --container-padding: 20px;
+  --container-padding-mobile: 12px;
+  --container-padding-small-mobile: 10px;
+}
+
+/* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 /* Header Wrapper */
@@ -33,19 +49,21 @@
 
 /* Main Header Container */
 .ecom-header-container {
-  max-width: 1200px;
+  max-width: var(--container-max-width);
   margin: 0 auto;
-  padding: 0 20px;
-  height: 70px;
+  padding: 0 var(--container-padding);
+  height: var(--header-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
 }
 
 /* Logo Section */
 .logo-section {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .shop-logo {
@@ -64,6 +82,8 @@
   display: flex;
   align-items: center;
   gap: 30px;
+  flex: 1;
+  justify-content: flex-end;
 }
 
 /* Desktop Navigation Links */
@@ -92,6 +112,7 @@
   transition: all 0.3s ease;
   min-width: 180px;
   justify-content: space-between;
+  white-space: nowrap;
 }
 
 .browse-by-button:hover {
@@ -126,7 +147,8 @@
   box-shadow: 0 10px 40px var(--shadow);
   min-width: 240px;
   list-style: none;
-  padding: 10px 0;
+  padding: 8px 0;
+  margin: 0;
   z-index: 1001;
   animation: slideDown 0.3s ease;
 }
@@ -144,6 +166,7 @@
 
 .browse-by-dropdown li {
   margin: 0;
+  list-style: none;
 }
 
 .browse-link-btn {
@@ -159,6 +182,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  font-family: inherit;
 }
 
 .browse-link-btn:hover {
@@ -172,6 +196,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  flex-shrink: 0;
 }
 
 /* Search Toggle Container */
@@ -214,7 +239,7 @@
   color: var(--primary-teal);
 }
 
-/* Cart Button */
+/* Cart Button (commented in component but styled for future use) */
 .cart-badge {
   position: absolute;
   top: -5px;
@@ -257,7 +282,7 @@
 }
 
 .search-bar-container {
-  max-width: 1200px;
+  max-width: var(--container-max-width);
   margin: 0 auto;
   padding: 20px;
 }
@@ -284,6 +309,7 @@
   transform: translateY(-50%);
   color: var(--text-light);
   font-size: 1.1rem;
+  pointer-events: none;
 }
 
 .search-input-field {
@@ -295,6 +321,7 @@
   color: var(--text-dark);
   background: var(--bg-white);
   transition: all 0.3s ease;
+  font-family: inherit;
 }
 
 .search-input-field:focus {
@@ -318,6 +345,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
+  font-family: inherit;
 }
 
 .search-submit-btn:hover {
@@ -339,6 +367,7 @@
   font-size: 1.2rem;
   color: var(--text-medium);
   transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
 .search-close-btn:hover {
@@ -350,7 +379,7 @@
 /* Mobile Menu */
 .mobile-menu-overlay {
   position: fixed;
-  top: 70px;
+  top: var(--header-height);
   left: 0;
   right: 0;
   bottom: 0;
@@ -370,26 +399,29 @@
   border-top: 1px solid var(--border-light);
   padding: 30px;
   animation: slideDown 0.3s ease;
-  max-height: calc(100vh - 70px);
+  max-height: calc(100vh - var(--header-height));
   overflow-y: auto;
 }
 
-/* Mobile Only Icon */
+/* Mobile Only Icon - Hidden by default */
 .mobile-only-icon {
   display: none;
 }
 
-/* Responsive Design */
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
 
-/* Tablet */
+/* Tablet (768px - 992px) */
 @media (max-width: 992px) {
-  .ecom-header-container {
-    padding: 0 15px;
-    height: 65px;
+  :root {
+    --header-height: 65px;
+    --container-padding: 15px;
   }
-  
+
   .shop-logo {
-    height: 40px;
+    height: 45px;
+    width: 45px;
   }
   
   .nav-and-actions {
@@ -407,41 +439,59 @@
     width: 42px;
     height: 42px;
   }
+  
+  .action-buttons {
+    gap: 12px;
+  }
 }
 
-/* Mobile */
+/* Mobile (max-width: 768px) */
 @media (max-width: 768px) {
+  :root {
+    --header-height: var(--header-height-mobile);
+    --container-padding: var(--container-padding-mobile);
+  }
+
   .ecom-header-container {
-    padding: 0 12px;
-    height: 60px;
+    height: var(--header-height-mobile);
   }
   
   .shop-logo {
-    height: 35px;
+    height: 38px;
+    width: 38px;
   }
   
   .nav-and-actions {
-    gap: 15px;
+    gap: 12px;
   }
   
+  /* Hide desktop navigation */
   .desktop-nav-links {
     display: none;
   }
   
+  /* Show mobile menu button */
   .mobile-only-icon {
     display: flex;
   }
   
+  /* Adjust action buttons for mobile */
+  .action-buttons {
+    gap: 10px;
+  }
+  
+  /* Search bar becomes fixed on mobile */
   .search-bar-after-header {
     position: fixed;
-    top: 60px;
+    top: var(--header-height-mobile);
     z-index: 1001;
   }
   
   .search-bar-container {
-    padding: 15px;
+    padding: 12px 15px;
   }
   
+  /* Stack search inputs vertically on mobile */
   .search-input-group {
     flex-direction: column;
     gap: 10px;
@@ -454,24 +504,31 @@
   .search-submit-btn {
     width: 100%;
     padding: 12px;
+    font-size: 1rem;
   }
   
+  /* Position close button absolutely for mobile */
   .search-close-btn {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 12px;
+    right: 15px;
+    width: 38px;
+    height: 38px;
+    font-size: 1rem;
   }
   
-  .browse-by-container {
+  /* Browse menu takes full width in mobile menu */
+  .mobile-menu-content .browse-by-container {
     width: 100%;
   }
   
-  .browse-by-button {
+  .mobile-menu-content .browse-by-button {
     width: 100%;
     justify-content: center;
   }
   
-  .browse-by-dropdown {
+  /* Dropdown becomes static in mobile menu */
+  .mobile-menu-content .browse-by-dropdown {
     position: static;
     margin-top: 10px;
     box-shadow: none;
@@ -479,19 +536,18 @@
     width: 100%;
     animation: none;
   }
-}
-
-/* Small Mobile */
-@media (max-width: 480px) {
-  .ecom-header-container {
-    padding: 0 10px;
-    height: 55px;
+  
+  /* Adjust mobile menu overlay top position */
+  .mobile-menu-overlay {
+    top: var(--header-height-mobile);
   }
   
-  .shop-logo {
-    height: 30px;
+  .mobile-menu-content {
+    padding: 20px;
+    max-height: calc(100vh - var(--header-height-mobile));
   }
   
+  /* Button sizes for mobile */
   .search-icon-button,
   .cart-button,
   .menu-toggle-button {
@@ -499,21 +555,102 @@
     height: 40px;
     font-size: 1.1rem;
   }
+}
+
+/* Small Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+  :root {
+    --header-height: var(--header-height-small-mobile);
+    --container-padding: var(--container-padding-small-mobile);
+  }
+
+  .ecom-header-container {
+    height: var(--header-height-small-mobile);
+  }
   
-  .mobile-menu-content {
-    padding: 20px;
+  .shop-logo {
+    height: 32px;
+    width: 32px;
+  }
+  
+  .nav-and-actions {
+    gap: 8px;
+  }
+  
+  .action-buttons {
+    gap: 8px;
+  }
+  
+  .search-icon-button,
+  .cart-button,
+  .menu-toggle-button {
+    width: 38px;
+    height: 38px;
+    font-size: 1rem;
+    border-radius: 8px;
   }
   
   .mobile-menu-overlay {
-    top: 55px;
+    top: var(--header-height-small-mobile);
+  }
+  
+  .mobile-menu-content {
+    padding: 16px;
+    max-height: calc(100vh - var(--header-height-small-mobile));
+  }
+  
+  .search-bar-after-header {
+    top: var(--header-height-small-mobile);
+  }
+  
+  .search-bar-container {
+    padding: 10px 12px;
+  }
+  
+  .search-input-field {
+    padding: 12px 12px 12px 40px;
+    font-size: 0.95rem;
+  }
+  
+  .search-input-icon {
+    left: 14px;
+    font-size: 0.95rem;
+  }
+  
+  .search-submit-btn {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+  
+  .search-close-btn {
+    width: 34px;
+    height: 34px;
+    top: 10px;
+    right: 12px;
+  }
+  
+  .browse-by-button {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    min-width: auto;
   }
 }
 
-/* Focus states for accessibility */
-button:focus,
-input:focus {
-  outline: 3px solid var(--primary-teal-light);
+/* ============================================
+   ACCESSIBILITY & UTILITIES
+   ============================================ */
+
+/* Focus states for keyboard navigation */
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--primary-teal);
   outline-offset: 2px;
+}
+
+/* Remove default focus outline for mouse users */
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible) {
+  outline: none;
 }
 
 /* Selection color */
@@ -529,6 +666,7 @@ input:focus {
 
 .mobile-menu-content::-webkit-scrollbar-track {
   background: var(--bg-light);
+  border-radius: 3px;
 }
 
 .mobile-menu-content::-webkit-scrollbar-thumb {
@@ -540,7 +678,36 @@ input:focus {
   background: var(--primary-teal-dark);
 }
 
+/* Prevent body scroll when mobile menu is open */
+body.menu-open {
+  overflow: hidden;
+}
+
 /* Smooth transitions */
-* {
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+.ecom-header-container,
+.search-icon-button,
+.cart-button,
+.menu-toggle-button,
+.browse-by-button,
+.search-input-field,
+.search-submit-btn {
+  transition: all 0.3s ease;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  .ecom-header-container,
+  .search-icon-button,
+  .cart-button,
+  .menu-toggle-button,
+  .browse-by-button,
+  .search-input-field,
+  .search-submit-btn,
+  .browse-by-dropdown,
+  .search-bar-after-header,
+  .mobile-menu-overlay {
+    transition: none !important;
+    animation: none !important;
+  }
 }
