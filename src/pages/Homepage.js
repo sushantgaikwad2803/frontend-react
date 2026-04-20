@@ -68,66 +68,86 @@ const Homepage = () => {
 
   return (
     <>
-    <Helmet>
-      <title>Annual Reports of Indian Companies | AR Annual Report</title>
-      <meta 
-        name="description" 
-        content="Download latest annual reports of Indian companies like TCS, Infosys, Reliance in PDF format." 
-      />
+      <Helmet>
+        <title> Annual Reports PDF Download | AR Annual Report</title>
 
-      {/* ✅ Google Verification (IMPORTANT) */}
-      <meta 
-        name="google-site-verification" 
-        content="bc6r5V5HAg-ia7AMz9s8GsbHVF8jnGN4Ez1S1" 
-      />
+        <meta
+          name="description"
+          content="Download latest annual reports of global companies like Apple, Microsoft, Tesla, Amazon in PDF format. Access financial reports, investor data, and company insights."
+        />
 
-      {/* ✅ Schema (SEO Boost) */}
-      <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "WebSite",
-          "name": "AR Annual Report",
-          "url": "https://arannualreport.com"
-        })}
-      </script>
-    </Helmet>
+        <meta
+          name="keywords"
+          content="
+          annual reports,
+      annual report pdf,
+      global annual reports,
+      company financial reports,
+      apple annual report 2024,
+      microsoft annual report,
+      tesla annual report pdf,
+      amazon annual report download,
+      investor reports pdf,
+      corporate financial statements,
+      stock exchange reports
+    "
+        />
 
-    <div className="homepage">
-      <HeroSection />
+        <link rel="canonical" href="https://arannualreport.com/" />
 
-      {/* Continuous Flow Section */}
-      <section className="continuous-flow-section">
-        <div className="flow-container">
+        {/* Google Verification */}
+        <meta
+          name="google-site-verification"
+          content="bc6r5V5HAg-ia7AMz9s8GsbHVF8jnGN4Ez1S1"
+        />
 
-          <div className="flow-track">
-            <div ref={trackRef} className="image-flow">
-              {allImages.map((image, index) => (
-                <div
-                  key={`${image.id}-${index}`}
-                  className="flow-image"
-                  onClick={() => handleImageClick(image.alt)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <img
-                    src={image.src} 
-                    alt={image.alt}
-                    onError={() => console.log('Image failed:', image.alt)}
-                  />
-                  <div className="flow-overlay">
-                    <span className="flow-title">{image.alt}</span>
+        {/* Schema */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "AR Annual Report",
+            "url": "https://arannualreport.com"
+          })}
+        </script>
+      </Helmet>
+
+      <div className="homepage">
+        <HeroSection />
+
+        {/* Continuous Flow Section */}
+        <section className="continuous-flow-section">
+          <div className="flow-container">
+
+            <div className="flow-track">
+              <div ref={trackRef} className="image-flow">
+                {allImages.map((image, index) => (
+                  <div
+                    key={`${image.id}-${index}`}
+                    className="flow-image"
+                    onClick={() => handleImageClick(image.alt)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      onError={() => console.log('Image failed:', image.alt)}
+                    />
+                    <div className="flow-overlay">
+                      <span className="flow-title">{image.alt}</span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div> 
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <Company />
-      <RandomLogo/>
-      <InvestorsSection/>
-      <Filter/>
-    </div>
+        <Company />
+        <RandomLogo />
+        <InvestorsSection />
+        <Filter />
+      </div>
     </>
   );
 };
