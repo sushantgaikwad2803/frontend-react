@@ -102,26 +102,36 @@ export default function AllReports() {
       <Helmet>
         <title>
           {company_name
-            ? `${company_name} (${ticker}) Annual Report PDF Download`
-            : "Company Annual Report"}
+            ? `${company_name} (${ticker}) Annual Report ${mostRecent?.year || ""} PDF Download`
+            : "Company Annual Report PDF"}
         </title>
 
         <meta
           name="description"
           content={
             company_name
-              ? `Download ${company_name} (${ticker}) annual reports PDF. View latest and past financial reports.`
+              ? `Download ${company_name} (${ticker}) annual report PDF including financial statements, revenue details, and investor insights. Get latest and past reports.`
               : "Download company annual reports in PDF format."
           }
         />
 
-        {/* ✅ Dynamic Keywords */}
+        {/* ❌ not very important but ok to keep */}
         <meta
           name="keywords"
-          content={`${company_name}, ${ticker}, ${exchange}, annual report PDF, financial reports`}
+          content={`
+      ${company_name} annual report,
+      ${company_name} ${mostRecent?.year} report pdf,
+      ${ticker} financial report,
+      ${exchange} listed companies reports,
+      company annual report pdf download,
+      investor reports ${company_name}
+    `}
         />
 
-        {/* ✅ Schema (VERY POWERFUL) */}
+        {/* ✅ Canonical URL */}
+        <link rel="canonical" href={window.location.href} />
+
+        {/* ✅ Schema */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
