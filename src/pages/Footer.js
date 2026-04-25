@@ -39,11 +39,11 @@ export default function Footer() {
                 Other Filter
               </a>
             </li>
-            <li>
+            {/* <li>
               <a href="/contact" onClick={(e) => { e.preventDefault(); navigate("/contact"); }}>
                 Contact
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
 
