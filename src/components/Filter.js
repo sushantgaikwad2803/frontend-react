@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Filter.css";
 
-
 /* ------------------ IMPORT EXCHANGE LOGOS ------------------ */
 import slid1 from '../media/AIM.png';
 import slid2 from '../media/AMEX.png';
@@ -93,7 +92,7 @@ export default function OtherFilter() {
   return (
     <div className="filterPage-container">
 
-      <h1 className="filterPage-title">Other Filters</h1>
+      <h1 className="filterPage-title">Filters Annual Reports</h1>
 
       {/* ---- 3 Columns Row ---- */}
       <div className="filterPage-row">
@@ -122,7 +121,7 @@ export default function OtherFilter() {
                 key={sector}
                 className="filterPage-sectorBtn"
                 onClick={() =>
-                  navigate(`/AllCompanies?sector=${encodeURIComponent(sector)}`)
+                  navigate(`/sector/${encodeURIComponent(sector.toLowerCase())}`)
                 }
               >
                 {sector}
@@ -141,7 +140,7 @@ export default function OtherFilter() {
                 key={ex.id}
                 className="filterPage-exchangeCard"
                 onClick={() =>
-                  navigate(`/AllCompanies?exchange=${encodeURIComponent(ex.name)}`) 
+                  navigate(`/exchange/${encodeURIComponent(ex.name)}`) 
                 }
               >
                 <img src={ex.src} alt={ex.name} className="filterPage-exchangeLogo" />
@@ -160,7 +159,7 @@ export default function OtherFilter() {
               <button
                 key={letter}
                 className="filterPage-alphaBtn"
-                onClick={() => navigate(`/AllCompanies?alpha=${letter}`)}
+                onClick={() => navigate(`/alpha/${letter.toLowerCase()}`)}
               >
                 {letter}
               </button>
