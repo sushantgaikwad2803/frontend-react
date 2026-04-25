@@ -42,7 +42,13 @@ export default function RandomLogo() {
             <div
               key={company.id}
               className="logo-card1"
-              onClick={() => goToReports(company)}
+              onClick={() => {
+                const slug = `${company.name}-${company.ticker}`
+                  .toLowerCase()
+                  .replace(/\s+/g, "-");
+
+                navigate(`/company/${slug}/${company.exchange}`);
+              }}
             >
               <img
                 src={company.logo || "/fallback-logo.png"}
