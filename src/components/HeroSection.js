@@ -95,7 +95,7 @@ const HeroSection = () => {
         </div>
 
         <div className="hero-text-content">
-          <h1>Explore 152,075 annual reports from 10,379 leading global companies to fuel your strategic investment decisions.</h1>
+          <h1>Global Annual Reports Database for Smart Investment Research</h1>
           <p>Access comprehensive financial data, market insights, and strategic analysis from the world's top enterprises to make informed investment choices.</p>
         </div>
       </div>
