@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import React, { useState } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import "./OtherFilters.css";
 
 /* ------------------ IMPORT EXCHANGE LOGOS ------------------ */
@@ -65,6 +67,7 @@ const SYSTEMS = {
   ],
 };
 
+
 /* ------------------ EXCHANGES ------------------ */
 const EXCHANGES = [
   { id: 1, name: "AIM", src: slid1, symbol: "LSE:AIM" },
@@ -101,6 +104,59 @@ export default function OtherFilter() {
     NAICS: "North American Industry Classification System",
     SIMPLE: "Simplified Sector Classification"
   };
+
+  // const navigate = useNavigate();
+  const params = useParams();
+  const location = useLocation();
+
+  const query = new URLSearchParams(location.search);
+
+  const routeSector = params.sector || "";
+  const routeExchange = params.exchange || "";
+  const routeAlpha = params.alpha || "";
+
+  const qSector = query.get("sector") || "";
+  const qExchange = query.get("exchange") || "";
+  const qAlpha = query.get("alpha") || "";
+  const qSearch = query.get("search") || "";
+
+  const finalSector = routeSector || qSector;
+  const finalExchange = routeExchange || qExchange;
+  const finalAlpha = (routeAlpha || qAlpha).toUpperCase();
+  const finalSearch = qSearch.toLowerCase();
+
+  const [, setCompanies] = useState([]);
+  const [, setLoading] = useState(false);
+
+  const BASE = process.env.REACT_APP_API_URL;
+
+  useEffect(() => {
+    async function loadData() {
+      setLoading(true);
+  
+      try {
+        let url = `${BASE}/api/companies/?`;
+  
+        if (finalSector) url += `sector=${finalSector}&`;
+        if (finalExchange) url += `exchange=${finalExchange}&`;
+        if (finalAlpha) url += `alpha=${finalAlpha}&`;
+        if (finalSearch) url += `search=${finalSearch}&`;
+  
+        const response = await axios.get(url);
+  
+        const list = response.data?.companies || [];
+        setCompanies(list);
+  
+      } catch (err) {
+        console.error("Error:", err);
+        setCompanies([]);
+      }
+  
+      setLoading(false);
+    }
+  
+    loadData();
+  }, [BASE, finalSector, finalExchange, finalAlpha, finalSearch]);
 
   return (
     <div className="other-filter-container">
@@ -166,7 +222,7 @@ export default function OtherFilter() {
               <div
                 key={sector}
                 className="sector-card-modern"
-                onClick={() => navigate(`/AllCompanies?sector=${encodeURIComponent(sector)}`)}
+                onClick={() => navigate(`/sector/${encodeURIComponent(sector.toLowerCase())}`)}
                 style={{ '--i': index }}
               >
                 <h4>{sector}</h4>
@@ -187,7 +243,7 @@ export default function OtherFilter() {
             <div
               key={exchange.id}
               className="exchange-card-modern"
-              onClick={() => navigate(`/AllCompanies?exchange=${encodeURIComponent(exchange.name)}`)}
+              onClick={() => navigate(`/exchange/${encodeURIComponent(exchange.name)}`)}
               style={{ '--i': index }}
             >
               <div className="exchange-logo-wrapper">
@@ -215,7 +271,7 @@ export default function OtherFilter() {
                 className={`letter-card ${selectedLetter === letter ? 'active' : ''}`}
                 onClick={() => {
                   setSelectedLetter(letter);
-                  navigate(`/AllCompanies?alpha=${letter}`);
+                  navigate(`/alpha/${letter.toLowerCase()}`);
                 }}
                 style={{ '--i': index }}
               >
