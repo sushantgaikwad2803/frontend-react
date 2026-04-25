@@ -113,9 +113,13 @@ export default function RandomReport() {
 
               <div className="card-actions">
                 <button
-                  onClick={() =>
-                    navigate(`/company-reports/${company.ticker}/${company.exchange}`)
-                  }
+                  onClick={() => {
+                    const slug = `${company.name}-${company.ticker}`
+                      .toLowerCase()
+                      .replace(/\s+/g, "-");
+
+                    navigate(`/company/${slug}/${company.exchange}`);
+                  }}
                   className="btn-view-company"
                 >
                   View Reports
