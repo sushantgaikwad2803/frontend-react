@@ -13,16 +13,18 @@ import {
 import "./AllReports.css";
 
 export default function AllReports() {
-  const { ticker: tickerParam, exchange: exchangeParam } = useParams();
+  const { companySlug, exchange } = useParams();
 
-  const ticker = tickerParam || null;
-  const exchange = exchangeParam || null;
+  const parts = companySlug?.split("-");
+  const ticker = parts?.[parts.length - 1]?.toUpperCase(); // AAPL
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showMore, setShowMore] = useState(false);
 
   const BASE_URL = process.env.REACT_APP_API_URL;
+
+  // navigate(`/company/${slug}`);
 
   const normalizeUrl = useCallback(
     (url) => {
@@ -35,7 +37,7 @@ export default function AllReports() {
   );
 
   useEffect(() => {
-    if (!ticker || !exchange) return;
+    if (!ticker) return;
 
     async function loadData() {
       setLoading(true);
@@ -66,13 +68,13 @@ export default function AllReports() {
     loadData();
   }, [ticker, exchange, BASE_URL, normalizeUrl]);
 
-  if (!ticker || !exchange)
+  if (!ticker)
     return <p className="no-data-message">Invalid company request.</p>;
   if (loading) return <p className="loading-message">Loading…</p>;
   if (!data) return <p className="no-data-message">Company not found.</p>;
 
   const {
-    company_name,
+    company_name,  
     sector,
     industry,
     employee_count,
@@ -82,6 +84,7 @@ export default function AllReports() {
     logo,
     reports = [],
     report_message,
+    // exchange,
   } = data;
 
   const mostRecent = reports.length
@@ -144,8 +147,15 @@ export default function AllReports() {
       </Helmet>
       <div className="page-container">
         <h1 className="main-title">
-          {company_name} ({ticker}) - {exchange}
+          {company_name} ({ticker})
         </h1>
+
+        <div className="seo-content">
+          {/* <p>
+            Download {company_name} ({ticker}) annual report PDF including financial statements,
+            revenue analysis, and investor insights. Access latest and previous reports.
+          </p> */}
+        </div>
 
         <CompanyInfoCard
           logo={logo}
@@ -159,7 +169,7 @@ export default function AllReports() {
         />
 
         {mostRecent ? (
-          <MostRecentCard report={mostRecent} />
+          <MostRecentCard report={mostRecent} company_name={company_name} />
         ) : (
           <div className="no-reports-box">
             <h2>No Reports Available</h2>
@@ -274,14 +284,14 @@ function CompanyInfoCard({
   );
 }
 
-function MostRecentCard({ report }) {
+function MostRecentCard({ report, company_name }) {
   if (!report) return null;
 
   return (
     <div className="recent-card">
       <img
         src={report.thumbnail_url || "/fallback-thumb.jpg"}
-        alt="Thumbnail"
+        alt={`${company_name} ${report.year} Annual Report PDF`}
         className="recent-thumb"
         onError={(e) => (e.target.src = "/fallback-thumb.jpg")}
       />
