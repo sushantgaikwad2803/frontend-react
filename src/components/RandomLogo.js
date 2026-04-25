@@ -25,12 +25,6 @@ export default function RandomLogo() {
   }, [BASE]);
 
   // Navigate to company reports page with both ticker & exchange
-  const goToReports = (company) => {
-    if (!company?.ticker || !company?.exchange) return;
-
-    // Navigate using both ticker and exchange
-    navigate(`/company-reports/${company.ticker}/${company.exchange}`);
-  };
 
   return (
     <div className="logo-section1">
