@@ -38,7 +38,7 @@ const Homepage = () => {
 
   /** 🔥 Updated: Navigate with exchange param */
   const handleImageClick = (exchangeName) => {
-    navigate(`/AllCompanies/${exchangeName}`);
+    navigate(`/exchange/${exchangeName.toLowerCase()}`);
   };
 
   const allImages = [...images, ...images, ...images, ...images, ...images];
@@ -147,6 +147,7 @@ const Homepage = () => {
         <RandomLogo />
         <InvestorsSection />
         <Filter />
+        
       </div>
     </>
   );
