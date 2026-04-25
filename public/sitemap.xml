@@ -1,15 +1,58 @@
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <url>
-    <loc>https://arannualreport.com/</loc>
-  </url>
+    <!-- Homepage -->
+    <url>
+      <loc>https://arannualreport.com/</loc>
+      <lastmod>2026-04-25</lastmod>
+      <changefreq>daily</changefreq>
+      <priority>1.0</priority>
+    </url>
 
-  <url>
-    <loc>https://arannualreport.com/AllCompanies</loc>
-  </url>
+    <!-- Sector List -->
+    <url>
+      <loc>https://arannualreport.com/sectorslist</loc>
+      <lastmod>2026-04-25</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+    </url>
 
-  <url>
-    <loc>https://arannualreport.com/sectorslist</loc>
-  </url>
+    <!-- Example Sector Pages -->
+    <url>
+      <loc>https://arannualreport.com/sector/technology</loc>
+      <lastmod>2026-04-25</lastmod>
+    </url>
 
-</urlset>
+    <url>
+      <loc>https://arannualreport.com/sector/financials</loc>
+      <lastmod>2026-04-25</lastmod>
+    </url>
+
+    <!-- Example Exchange Pages -->
+    <url>
+      <loc>https://arannualreport.com/exchange/nasdaq</loc>
+      <lastmod>2026-04-25</lastmod>
+    </url>
+
+    <url>
+      <loc>https://arannualreport.com/exchange/nyse</loc>
+      <lastmod>2026-04-25</lastmod>
+    </url>
+
+    <!-- Alphabet Pages -->
+    <url>
+      <loc>https://arannualreport.com/alpha/a</loc>
+      <lastmod>2026-04-25</lastmod>
+    </url>
+
+    <url>
+      <loc>https://arannualreport.com/alpha/b</loc>
+      <lastmod>2026-04-25</lastmod>
+    </url>
+
+    <!-- Example Company Page -->
+    <url>
+      <loc>https://arannualreport.com/company/apple-aapl/NASDAQ</loc>
+      <lastmod>2026-04-25</lastmod>
+    </url>
+
+  </urlset>
