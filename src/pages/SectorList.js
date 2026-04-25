@@ -99,7 +99,7 @@ export default function SectorList() {
   function openSector(sectorName, systemName) {
     const encodedSector = encodeURIComponent(sectorName);
     const encodedSystem = encodeURIComponent(systemName);
-    navigate(`/companies/sector/${encodedSector}?system=${encodedSystem}`);
+    navigate(`/sector/${encodedSector}?system=${encodedSystem}`);
   }
 
   return (
