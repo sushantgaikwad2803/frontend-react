@@ -51,7 +51,7 @@ const BrowseMenu = React.memo(({ closeMobileMenu }) => {
         onClick={toggleMenu}
         aria-expanded={isOpen}
       >
-        Browse Categories
+        Search By Categories
         <FontAwesomeIcon
           icon={isOpen ? faChevronUp : faChevronDown}
           className="dropdown-arrow"
@@ -90,7 +90,7 @@ const SearchBar = React.memo(({ isSearchOpen, closeSearchBar, searchRef }) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
 
-    navigate(`/AllCompanies?search=${encodeURIComponent(searchQuery.trim())}`);
+    navigate(`/search/${encodeURIComponent(searchQuery.trim())}`);
     closeSearchBar();
   };
 
